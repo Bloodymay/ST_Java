@@ -5,10 +5,10 @@ import ru.may.geometry.figure.Square;
 
 public class Geometery {
     public static void main(String[] args) {
-        Square.printArea(7);
-        Rectangle.printArea(3, 4);
-        Rectangle.printPerimeter(16,42);
-        Square.printPerimeter(62);
+        Square.printArea(new Square(5.0));
+        Rectangle.printArea(new Rectangle(3, 4));
+        Rectangle.printPerimeter(new Rectangle(16,42));
+        Square.printPerimeter(new Square(20));
 
     }
 

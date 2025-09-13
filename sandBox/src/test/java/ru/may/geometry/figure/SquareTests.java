@@ -7,11 +7,12 @@ import org.junit.jupiter.api.Test;
 public class SquareTests {
     @Test
     void canGetArea() {
-        double result = Square.getArea(25);
-        Assertions.assertEquals(625, result);
-    }
+        var s = new Square(15);
+        double result = s.getArea();
+        Assertions.assertEquals(225, result);
+        }
     @Test
     void canCalculatePerimeter() {
-        Assertions.assertEquals(100, Square.getPerimeter(25));
+        Assertions.assertEquals(60, new Square(15).getPerimeter());
     }
 }

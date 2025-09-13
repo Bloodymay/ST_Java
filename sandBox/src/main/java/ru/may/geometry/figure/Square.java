@@ -1,18 +1,20 @@
 package ru.may.geometry.figure;
 
-public class Square {
-    public static void printArea(double side) {
-        System.out.println(String.format("Площадь квадрата со стороной %f = %f", side, getArea(side)));
+public record Square (double side) {//сокращенная запись описания класса
+
+    public static void printArea(Square s) {
+        System.out.println(String.format("Площадь квадрата со стороной %f = %f", s.side, s.getArea()));
     }
 
-    public static double getArea(double side) {
-        return side * side;
+
+    public static void printPerimeter(Square s) {
+        System.out.println(String.format("Периметр квадрата со стороной %f = %f", s.side, s.getPerimeter() ));
+    }
+    public double getArea() {
+        return this.side * this.side;
     }
 
-    public static double getPerimeter(double side) {
-        return side * 4;
-    }
-    public static void printPerimeter(double side) {
-        System.out.println(String.format("Периметр квадрата со стороной %f = %f", side, getPerimeter(side)));
+    public double getPerimeter() {
+        return this.side * 4;
     }
 }

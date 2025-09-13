@@ -6,12 +6,14 @@ import org.junit.jupiter.api.Test;
 public class RestangleTests {
     @Test
     void canCalculateArea(){
-       double result = Rectangle.getArea(16,21);
-       Assertions.assertEquals(336, result);
+        var s = new Rectangle(22, 55);
+        double result = s.getArea();
+        Assertions.assertEquals(1210, result);
     }
     @Test
     void getPerimeter(){
-        double result = Rectangle.getPerimeter(15, 45);
+        var s = new Rectangle(15, 45);
+        double result = s.getPerimeter();
         Assertions.assertEquals(120, result);
     }
 }
