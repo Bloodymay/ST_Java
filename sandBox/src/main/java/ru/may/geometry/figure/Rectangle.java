@@ -6,7 +6,8 @@ public class Rectangle {
     }
 
     public static void printRectangleArea(double sideA, double sideB) {
-        System.out.println("Площадь квадрата со стороной " + sideA + " и " + sideB + " = " + RectangleArea(sideA, sideB));
+        var text = String.format("Площадь Прямоугольника со сторонами %f и %f = %f", sideA, sideB, RectangleArea(sideA, sideB));
+        System.out.println(text);
     }
 
     private static Object RectangleArea(double sideA, double sideB) {
