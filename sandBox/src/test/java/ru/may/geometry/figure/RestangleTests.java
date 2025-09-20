@@ -33,5 +33,17 @@ public class RestangleTests {
             } catch (IllegalArgumentException e) {
             }
         }
+    @Test
+    void testEquality() {
+        var r1 = new Rectangle(12, 6);
+        var r2 = new Rectangle(12, 6);
+        Assertions.assertEquals(r1, r2);
+    }
+    @Test
+    void testEquality2() {
+        var r1 = new Rectangle(12, 6);
+        var r2 = new Rectangle(6, 12);
+        Assertions.assertEquals(r1, r2);
+    }
 
         }

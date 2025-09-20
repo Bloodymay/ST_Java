@@ -1,6 +1,6 @@
 package ru.may.geometry.figure;
 
-public class Rectangle {
+/*public class Rectangle {
 
     private double sideA;
     private double sideB;
@@ -10,7 +10,18 @@ public class Rectangle {
         if ((this.sideA <= 0)||(this.sideB <= 0)) {
             throw new IllegalArgumentException("sideA and sideB must be greater than 0");
         }
+    }*/
+
+import java.util.Objects;
+
+public record Rectangle(double sideA, double sideB) {
+    public Rectangle{
+        if ((sideA <= 0)||(sideB <= 0)) {
+            throw new IllegalArgumentException("sideA and sideB must be greater than 0");
+        }
+
     }
+
 
     public double getArea() {
         return this.sideA * this.sideB;
@@ -33,4 +44,16 @@ public class Rectangle {
         System.out.println(text);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Rectangle rectangle = (Rectangle) o;
+        return (Double.compare(sideA, rectangle.sideA) == 0 && Double.compare(sideB, rectangle.sideB) == 0)
+                || (Double.compare(sideA, rectangle.sideB) == 0 && Double.compare(sideB, rectangle.sideA) == 0) ;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sideA, sideB);
+    }
 }
