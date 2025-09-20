@@ -19,16 +19,16 @@ public class RestangleTests {
     @Test
     void cannotCalcRectWithNegativeSideA() {
         try {
-            var s = new Rectangle(-20,30);
+            new Rectangle(-20,30);
             Assertions.fail();
         } catch (IllegalArgumentException e) {
         }
     }
 
         @Test
-        void cannotCalcSqureWithNegativeSideB() {
+        void cannotCalcRectWithNegativeSideB() {
             try {
-                var s = new Rectangle(30,-20);
+                new Rectangle(30,-20);
                 Assertions.fail();
             } catch (IllegalArgumentException e) {
             }
