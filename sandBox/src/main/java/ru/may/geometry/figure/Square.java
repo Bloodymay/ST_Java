@@ -1,6 +1,11 @@
 package ru.may.geometry.figure;
 
 public record Square (double side) {//сокращенная запись описания класса
+    public Square {
+        if (side <= 0) {
+            throw new IllegalArgumentException("Side must be a positive number");
+        }
+    }
 
     public static void printArea(Square s) {
         System.out.println(String.format("Площадь квадрата со стороной %f = %f", s.side, s.getArea()));

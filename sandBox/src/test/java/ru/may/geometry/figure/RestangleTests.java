@@ -16,4 +16,22 @@ public class RestangleTests {
         double result = s.getPerimeter();
         Assertions.assertEquals(120, result);
     }
-}
+    @Test
+    void cannotCalcRectWithNegativeSideA() {
+        try {
+            var s = new Rectangle(-20,30);
+            Assertions.fail();
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+        @Test
+        void cannotCalcSqureWithNegativeSideB() {
+            try {
+                var s = new Rectangle(30,-20);
+                Assertions.fail();
+            } catch (IllegalArgumentException e) {
+            }
+        }
+
+        }

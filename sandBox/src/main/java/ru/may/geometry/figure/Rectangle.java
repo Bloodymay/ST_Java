@@ -1,11 +1,15 @@
 package ru.may.geometry.figure;
 
 public class Rectangle {
+
     private double sideA;
     private double sideB;
     public Rectangle(double sideA, double sideB) {
         this.sideA = sideA;
         this.sideB = sideB;
+        if ((this.sideA <= 0)||(this.sideB <= 0)) {
+            throw new IllegalArgumentException("sideA and sideB must be greater than 0");
+        }
     }
 
     public double getArea() {
