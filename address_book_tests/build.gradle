@@ -16,5 +16,10 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
-}
+    test {
+        useJUnitPlatform()
+    }
+    if (project.hasProperty("browser")){
+        systemProperty("browser", project.property("browser"))
+    }
+    }
