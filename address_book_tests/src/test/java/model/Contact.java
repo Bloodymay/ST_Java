@@ -15,8 +15,8 @@ public record Contact(String firstName, String middleName, String lastName, Stri
                 null, "", "", "");
     }
 
-    public Contact mainFields() {
-        return new Contact(firstName, middleName, this.lastName, this.nickName, this.photo, this.position,
+    public Contact mainFields(String firstName, String lastName,String address, String mobilePhone) {
+        return new Contact(firstName, this.middleName, lastName, this.nickName, this.photo, this.position,
                 this.company, address, this.homePhone, mobilePhone, this.workPhone, this.fax,
                 email, this.email2, this.email3, homepage, this.birthDay, this.birthMonth, this.birthYear,
                 this.anniversaryDay, this.anniversaryMonth, this.anniversaryYear, this.group);

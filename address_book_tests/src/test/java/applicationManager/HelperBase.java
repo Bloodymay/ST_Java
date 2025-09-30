@@ -14,6 +14,12 @@ public class HelperBase {
         manager.driver.findElement(locator).clear();
         manager.driver.findElement(locator).sendKeys(group);
     }
+    protected void typeTextInContact(By locator, String contact) {
+        clickElement(locator);
+        manager.driver.findElement(locator).clear();
+        manager.driver.findElement(locator).sendKeys(contact);
+
+    }
 
     protected void clickElement(By locator) {
         manager.driver.findElement(locator).click();

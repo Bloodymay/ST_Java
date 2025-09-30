@@ -50,7 +50,7 @@ public class GroupHelper extends HelperBase {
     }
 
     private void initCreationGroup() {
-        clickElement(By.name("new"));
+    clickElement(By.name("new"));
     }
 
     public boolean isGroupPresent() {
