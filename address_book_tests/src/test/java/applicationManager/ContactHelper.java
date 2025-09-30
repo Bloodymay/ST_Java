@@ -2,7 +2,9 @@ package applicationManager;
 
 import model.Contact;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+
+import java.util.concurrent.TimeUnit;
+
 
 public class ContactHelper extends HelperBase {
     public ContactHelper(AppManager manager) {
@@ -11,7 +13,12 @@ public class ContactHelper extends HelperBase {
 
     public void contactCreation(Contact contact) {
         initCreationContact();
-        fillContactForm(contact);
+        if (contact.getPhoto() != null) {
+            fillContactFormWithFile(contact);
+            submitCreateContact();
+            returnToHomePage();
+
+        } else fillContactForm(contact);
         submitCreateContact();
         returnToHomePage();
     }
@@ -25,6 +32,27 @@ public class ContactHelper extends HelperBase {
         typeTextInContact(By.name("lastname"), contact.lastName());
         typeTextInContact(By.name("address"), contact.address());
         typeTextInContact(By.name("email"), contact.email());
+    }
+
+    public void fillContactFormWithFile(Contact contact) {
+        typeTextInContact(By.name("firstname"), contact.firstName());
+        typeTextInContact(By.name("lastname"), contact.lastName());
+        typeTextInContact(By.name("address"), contact.address());
+        typeTextInContact(By.name("email"), contact.email());
+        addFiles(By.name("photo"), contact.photo());
+        typeTextInContact(By.name("homepage"), contact.homepage());
+    }
+
+    public void addFiles(By locator, String contact) {
+        manager.driver.findElement(locator).sendKeys(contact);
+    }
+
+    public void waiting(int seconds) {
+        try {
+            Thread.sleep(TimeUnit.SECONDS.toMillis(seconds));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void initModifyContact() {
