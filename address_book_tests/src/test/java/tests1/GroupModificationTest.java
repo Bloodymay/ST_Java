@@ -11,6 +11,5 @@ public class GroupModificationTest extends TestBase {
         }
         app.getGroups().modifyGroup(new Group().withName("Modify name"));
 
-
     }
 }
