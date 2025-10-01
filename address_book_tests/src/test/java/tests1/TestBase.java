@@ -11,7 +11,7 @@ public class TestBase {
         if (app == null) {
             app = new AppManager();
         }
-        app.initialization(System.getProperty("browser", "firefox"));
+        app.initialization(System.getProperty("browser", "firefox"));//Добавлен выбор браузера
 
 
     }

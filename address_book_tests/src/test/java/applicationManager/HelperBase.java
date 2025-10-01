@@ -2,6 +2,8 @@ package applicationManager;
 
 import org.openqa.selenium.By;
 
+import java.util.concurrent.TimeUnit;
+
 public class HelperBase {
     protected final AppManager manager;
 
@@ -23,5 +25,12 @@ public class HelperBase {
 
     protected void clickElement(By locator) {
         manager.driver.findElement(locator).click();
+    }
+    protected void waiting(int seconds) {
+        try {
+            Thread.sleep(TimeUnit.SECONDS.toMillis(seconds));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

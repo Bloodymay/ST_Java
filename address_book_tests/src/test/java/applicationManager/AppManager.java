@@ -21,7 +21,7 @@ public class AppManager {
             } else if (browser.equals("chrome")) {
                 driver = new ChromeDriver();
             } else {
-                throw new IllegalArgumentException("Unsupported browser: " + browser);
+                throw new IllegalArgumentException("Unsupported browser: " + browser);//Добавлен выбор браузера
             }
             Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
             driver.get("http://localhost/addressbook/");

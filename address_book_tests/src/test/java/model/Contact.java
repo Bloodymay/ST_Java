@@ -27,14 +27,14 @@ public record Contact(String firstName, String middleName, String lastName, Stri
     }
 
     public Contact contactWithPhoto(String firstName, String lastName,String address, String mobilePhone, String photo,String homepage) {
-        return new Contact(firstName, middleName, this.lastName, this.nickName,photo, this.position,
+        return new Contact(firstName, middleName, lastName, this.nickName,photo, this.position,
                 this.company, address, this.homePhone, mobilePhone, this.workPhone, this.fax,
                 email, this.email2, this.email3, homepage, this.birthDay, this.birthMonth, this.birthYear,
                 this.anniversaryDay, this.anniversaryMonth, this.anniversaryYear, this.group);
     }
 
-    public Contact contactWithPhotoAndBirthDate() {
-        return new Contact(firstName, middleName, this.lastName, this.nickName, photo, this.position,
+    public Contact contactWithPhotoAndBirthDate(String firstName, String lastName,String address, String mobilePhone, String photo,String homepage, Integer birthDay,String birthMonth,String birthYear) {
+        return new Contact(firstName, middleName, lastName, this.nickName, photo, this.position,
                 this.company, address, this.homePhone, mobilePhone, this.workPhone, this.fax,
                 email, this.email2, this.email3, homepage, birthDay, birthMonth, birthYear,
                 this.anniversaryDay, this.anniversaryMonth, this.anniversaryYear, this.group);

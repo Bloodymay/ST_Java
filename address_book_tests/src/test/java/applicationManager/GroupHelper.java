@@ -19,10 +19,16 @@ public class GroupHelper extends HelperBase {
 
     public void creatingGroup(Group group) {
         openGroupPage();
+        waiting(3);
         initCreationGroup();
+        //waiting(3);
         fillGroupForm(group);
+        //waiting(3);
         submitGroupCreation();
+        waiting(3);
         returnsToGroupPage();
+        waiting(3);
+
 
     }
 
@@ -32,18 +38,23 @@ public class GroupHelper extends HelperBase {
 
     public void removeGroup() {
         openGroupPage();
+        waiting(3);
         clickElement(By.linkText("groups"));
         selectGroup();
         removeSelectedGroup();
+        waiting(3);
         returnsToGroupPage();
     }
 
     public void modifyGroup(Group modifiedGroup) {
         openGroupPage();
+        waiting(3);
         selectGroup();
         initGroupModification();
+        waiting(3);
         fillGroupForm(modifiedGroup);
         submitGroupModification();
+        waiting(3);
         returnsToGroupPage();
 
 
