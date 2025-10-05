@@ -64,11 +64,6 @@ public class GroupHelper extends HelperBase {
     clickElement(By.name("new"));
     }
 
-    public boolean isGroupPresent() {
-        openGroupPage();
-        return manager.isElementPresent(By.name("selected[]"));
-    }
-
 
     private void removeSelectedGroup() {
         clickElement(By.name("delete"));
@@ -101,4 +96,8 @@ public class GroupHelper extends HelperBase {
 
     }
 
+    public int getCount() {
+        openGroupPage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
 }
