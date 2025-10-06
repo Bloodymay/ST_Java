@@ -2,6 +2,10 @@ package applicationManager;
 
 import model.Group;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class GroupHelper extends HelperBase {
 
@@ -113,5 +117,10 @@ public class GroupHelper extends HelperBase {
         for (var checkbox : checkboxes) {
             checkbox.click();
         }
+    }
+    public void openPage() throws InterruptedException {
+        Thread.sleep(1500);
+        manager.driver.get("http://localhost/addressbook/group.php");
+        Thread.sleep(1500);
     }
 }

@@ -95,7 +95,7 @@ public class ContactHelper extends HelperBase {
     }
 
     public void closeAlert() {
-        manager.driver.switchTo().alert().accept();
+        manager.driver.switchTo().alert().dismiss();
     }
 
 }

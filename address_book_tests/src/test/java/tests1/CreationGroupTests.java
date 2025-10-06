@@ -74,11 +74,15 @@ public class CreationGroupTests extends TestBase {
 
     @ParameterizedTest
     @MethodSource("negativeGroupProvider")
-    public void canNotCreateMultipleGroups(Group group) {
+    public void canNotCreateGroup(Group group) throws InterruptedException {
 
+        Thread.sleep(1500);
         int groupCount = app.getGroups().getCount();
+        Thread.sleep(1500);
         app.getGroups().creatingGroup(group);
-        app.getGroups().openGroupPage();
+        Thread.sleep(1500);
+        app.getGroups().openPage();
+        Thread.sleep(1500);
         int newGroupCount = app.getGroups().getCount();
         Assertions.assertEquals(groupCount, newGroupCount);
 
