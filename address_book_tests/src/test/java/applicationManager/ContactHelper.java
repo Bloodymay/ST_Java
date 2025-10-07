@@ -13,14 +13,21 @@ public class ContactHelper extends HelperBase {
 
     public void contactCreation(Contact contact) {
         initCreationContact();
-        if (contact.getPhoto() != null) {
-            fillContactFormWithFile(contact);
-            submitCreateContact();
-            returnToHomePage();
-
-        } else fillContactForm(contact);
+        waiting(5);
+//        if (contact.getPhoto() != null) {
+//            fillContactFormWithFile(contact);
+//            waiting(5);
+//            submitCreateContact();
+//            waiting(5);
+//            returnToHomePage();
+//
+//        } else
+//
+        fillContactForm(contact);
         submitCreateContact();
+        waiting(5);
         returnToHomePage();
+        waiting(5);
     }
 
     public void initCreationContact() {
@@ -29,17 +36,25 @@ public class ContactHelper extends HelperBase {
 
     public void fillContactForm(Contact contact) {
         typeTextInContact(By.name("firstname"), contact.firstName());
+        waiting(5);
         typeTextInContact(By.name("lastname"), contact.lastName());
+        waiting(5);
         typeTextInContact(By.name("address"), contact.address());
+        waiting(5);
         typeTextInContact(By.name("email"), contact.email());
     }
 
     public void fillContactFormWithFile(Contact contact) {
         typeTextInContact(By.name("firstname"), contact.firstName());
+        waiting(5);
         typeTextInContact(By.name("lastname"), contact.lastName());
+        waiting(5);
         typeTextInContact(By.name("address"), contact.address());
+        waiting(5);
         typeTextInContact(By.name("email"), contact.email());
+        waiting(5);
         addFiles(By.name("photo"), contact.photo());
+        waiting(5);
         typeTextInContact(By.name("homepage"), contact.homepage());
     }
 
@@ -65,6 +80,19 @@ public class ContactHelper extends HelperBase {
         fillContactForm(contact);
         submitModifyContact();
     }
+    public void deleteAllContacts() {
+        selectAllContacts();
+        deleteContact();
+        returnToHomePage();
+    }
+    public int contactCounter(){
+        if(!manager.isElementPresent(By.linkText("home page"))){
+            clickElement(By.linkText("home page"));
+        }
+        return manager.driver.findElements(By.name("selected[]")).size();
+
+    }
+
 
     public void submitModifyContact() {
         clickElement(By.name("update"));
@@ -94,8 +122,18 @@ public class ContactHelper extends HelperBase {
         clickElement(By.name("delete"));
     }
 
+    public void selectAllContacts() {
+        if(!manager.isElementPresent(By.linkText("home"))){
+            manager.driver.get("http://localhost/addressbook");
+        }
+        var checkboxes = manager.driver.findElements(By.name("selected[]"));
+        for (var checkbox : checkboxes ) {
+            checkbox.click();
+        }
+    }
+
     public void closeAlert() {
-        manager.driver.switchTo().alert().dismiss();
+        manager.driver.switchTo().alert().accept();
     }
 
 }

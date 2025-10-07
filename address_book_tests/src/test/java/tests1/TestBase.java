@@ -23,9 +23,7 @@ public class TestBase {
         for (int i = 0; i < length; i++) {
             result=result + (char) ('a' + random.nextInt(26));
         }
-//        if (length<20){
-//            result = result+'\'';
-//        }
+
         return result;
 
     }
