@@ -23,17 +23,10 @@ public class GroupHelper extends HelperBase {
 
     public void creatingGroup(Group group) {
         openGroupPage();
-        waiting(1);
         initCreationGroup();
-        //waiting(3);
         fillGroupForm(group);
-        //waiting(3);
         submitGroupCreation();
-        waiting(1);
         returnsToGroupPage();
-        waiting(1);
-
-
     }
 
     private void submitGroupCreation() {
@@ -75,7 +68,11 @@ public class GroupHelper extends HelperBase {
 
 
     private void returnsToGroupPage() {
-        clickElement(By.linkText("group page"));
+        if(!manager.isElementPresent(By.name("delete"))){
+            manager.driver.get("http://localhost/addressbook/group.php");
+       }
+        else{
+        clickElement(By.linkText("group page"));}
     }
 
     private void submitGroupModification() {
@@ -119,8 +116,9 @@ public class GroupHelper extends HelperBase {
         }
     }
     public void openPage() throws InterruptedException {
-        Thread.sleep(1500);
-        manager.driver.get("http://localhost/addressbook/group.php");
-        Thread.sleep(1500);
+        if(!manager.isElementPresent(By.name("delete"))){
+            manager.driver.get("http://localhost/addressbook/group.php");
+            Thread.sleep(15000);}
+
     }
 }

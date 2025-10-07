@@ -76,13 +76,13 @@ public class CreationGroupTests extends TestBase {
     @MethodSource("negativeGroupProvider")
     public void canNotCreateGroup(Group group) throws InterruptedException {
 
-        Thread.sleep(1500);
+        //Thread.sleep(1500);
         int groupCount = app.getGroups().getCount();
-        Thread.sleep(1500);
+        //Thread.sleep(1500);
         app.getGroups().creatingGroup(group);
-        Thread.sleep(1500);
+        //Thread.sleep(1500);
         app.getGroups().openPage();
-        Thread.sleep(1500);
+        //Thread.sleep(1500);
         int newGroupCount = app.getGroups().getCount();
         Assertions.assertEquals(groupCount, newGroupCount);
 
