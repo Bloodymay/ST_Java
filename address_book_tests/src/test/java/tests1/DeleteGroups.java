@@ -12,7 +12,7 @@ public class DeleteGroups extends TestBase {
 //    driver.quit();
 //  }
     @Test
-    public void removeGroups() {
+    public void removeGroup() {
         if (app.getGroups().getCount()==0) {
             app.getGroups().creatingGroup(new Group("group_name", "group_header", "group_footer"));
         }

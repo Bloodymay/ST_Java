@@ -58,7 +58,7 @@ public class GroupHelper extends HelperBase {
     }
 
     private void initCreationGroup() {
-    clickElement(By.name("new"));
+        clickElement(By.name("new"));
     }
 
 
@@ -70,9 +70,9 @@ public class GroupHelper extends HelperBase {
     private void returnsToGroupPage() {
         if(!manager.isElementPresent(By.name("delete"))){
             manager.driver.get("http://localhost/addressbook/group.php");
-       }
+        }
         else{
-        clickElement(By.linkText("group page"));}
+            clickElement(By.linkText("group page"));}
     }
 
     private void submitGroupModification() {

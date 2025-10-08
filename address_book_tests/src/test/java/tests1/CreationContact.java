@@ -2,7 +2,6 @@ package tests1;
 
 import model.Contact;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -29,6 +28,11 @@ public class CreationContact extends TestBase {
         return result;
     }
 
+    public static List<Contact> negativeContactProvider() {
+        var result = new ArrayList<Contact>(List.of(new Contact().mainFields("Mayya'", "Matveeva", "Kislovodsk", "204551248612")));
+        return result;
+    }
+
     @ParameterizedTest
     @MethodSource("contactProvider")
     public void testCreationContactMainFields(Contact contact) {
@@ -36,6 +40,15 @@ public class CreationContact extends TestBase {
         app.getContact().contactCreation(contact);
         int newQuantity = app.getContact().contactCounter();
         Assertions.assertEquals(initialQuantity + 1, newQuantity);
+    }
+
+    @ParameterizedTest
+    @MethodSource("negativeContactProvider")
+    public void testCreationContactNegativeMainFields(Contact contact) {
+        int initialQuantity = app.getContact().contactCounter();
+        app.getContact().contactCreation(contact);
+        int newQuantity = app.getContact().contactCounter();
+        Assertions.assertEquals(initialQuantity, newQuantity);
     }
 
 //    @Test
