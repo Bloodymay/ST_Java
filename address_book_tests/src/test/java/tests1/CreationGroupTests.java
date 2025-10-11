@@ -6,31 +6,35 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
 public class CreationGroupTests extends TestBase {
 
     public static List<Group> groupProvider() {
-        var result = new ArrayList<Group>(List.of(new Group("name", "footr", "header"),
-                new Group("name", "barr", "header")
+        var result = new ArrayList<Group>(List.of(new Group("", "name", "footr", "header"),
+                new Group("", "name", "barr", "header")
         ));
         for (var name : List.of("", "group_name")) {
             for (var header : List.of("", "header_name")) {
                 for (var footer : List.of("", "footer_name")) {
-                    result.add(new Group(name, header, footer));
+                    result.add(new Group().withName(name).withHeader(header).withFooter(footer));
                 }
             }
         }
         for (int i = 0; i < 5; i++) {
-            result.add(new Group(stringGenerator(i), stringGenerator(i), stringGenerator(i)));
+            result.add(new Group()
+                    .withName(stringGenerator(i))
+                    .withHeader(stringGenerator(i))
+                    .withHeader(stringGenerator(i)));
         }
         return result;
 
     }
 
     public static List<Group> negativeGroupProvider() {
-        var result = new ArrayList<Group>(List.of(new Group("name'", "footr", "header")
+        var result = new ArrayList<Group>(List.of(new Group("", "name'", "footr", "header")
         ));
         return result;
 
@@ -63,12 +67,18 @@ public class CreationGroupTests extends TestBase {
     @ParameterizedTest
     @MethodSource("groupProvider")
     public void canCreateMultipleGroups(Group group) {
-
-        int groupCount = app.getGroups().getCount();
+        var oldGroups = app.getGroups().getList();
         app.getGroups().creatingGroup(group);
+        var newGroups = app.getGroups().getList();
 
-        int newGroupCount = app.getGroups().getCount();
-        Assertions.assertEquals(groupCount + 1, newGroupCount);
+        Comparator<Group> compareByID = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newGroups.sort(compareByID);
+        var expectedList = new ArrayList<>(oldGroups);
+        expectedList.add(group.withID(newGroups.get(newGroups.size() - 1).id()).withHeader("").withFooter(""));
+        expectedList.sort(compareByID);
+        Assertions.assertEquals(newGroups, expectedList);
 
     }
 
@@ -76,15 +86,11 @@ public class CreationGroupTests extends TestBase {
     @MethodSource("negativeGroupProvider")
     public void canNotCreateGroup(Group group) throws InterruptedException {
 
-        //Thread.sleep(1500);
-        int groupCount = app.getGroups().getCount();
-        //Thread.sleep(1500);
+        var oldGroups = app.getGroups().getList();
         app.getGroups().creatingGroup(group);
-        //Thread.sleep(1500);
+        var newGroups = app.getGroups().getList();
         app.getGroups().openPage();
-        //Thread.sleep(1500);
-        int newGroupCount = app.getGroups().getCount();
-        Assertions.assertEquals(groupCount, newGroupCount);
+        Assertions.assertEquals(newGroups, oldGroups);
 
     }
 
