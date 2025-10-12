@@ -1,9 +1,7 @@
 package applicationManager;
 
 import model.Contact;
-import model.Group;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -115,14 +113,15 @@ public class ContactHelper extends HelperBase {
         }
     }
 
-    public void initModifyContact() {
+    public void initModifyContact(Contact contact) {
         goToTheHomePage();
-        clickElement(By.xpath("/html/body/div[1]/div[4]/form[2]/table/tbody/tr[2]/td[8]/a/img")); ////*[@id="maintable"]/tbody/tr[2]/td[8]/a/img
+        clickElement(By.cssSelector(String.format("a[href='edit.php?id=%s']", contact.id())));
+
     }
 
-    public void contactModify(Contact contact) {
-        initModifyContact();
-        fillContactForm(contact);
+    public void contactModify(Contact contact,Contact modifiedContact) {
+        initModifyContact(contact);
+        fillContactForm(modifiedContact);
         submitModifyContact();
     }
 
