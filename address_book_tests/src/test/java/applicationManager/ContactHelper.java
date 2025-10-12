@@ -125,11 +125,13 @@ public class ContactHelper extends HelperBase {
         fillContactForm(contact);
         submitModifyContact();
     }
+
     public void deleteOneContact(Contact contact) {
         selectContact(contact);
         deleteContact();
         returnToHomePage();
     }
+
     public void deleteAllContacts() {
         selectAllContacts();
         deleteContact();
@@ -171,22 +173,49 @@ public class ContactHelper extends HelperBase {
     }
 
 
+    //    public List<Contact> getContactList() {
+//        var contacts = new ArrayList<Contact>();
+//        var spans = manager.driver.findElements(By.cssSelector("tr"));
+//
+//            for (var _ : spans) {
+//                var attr =  manager.driver.findElements(By.cssSelector("td"));
+//                for (var attribute : attr) {
+//                    var name = attr.get(2).getText();
+//                    var lastName = attr.get(1).getText();
+//                    var checkbox = attribute.findElement(By.name("selected[]"));
+//                    var id = checkbox.getAttribute("value");
+//                    contacts.add(new Contact().withID(id).
+//                                                withName(name).
+//                                                withLastName(lastName));
+//                }
+//            }
+//
+//        return contacts;
+//    }
     public List<Contact> getContactList() {
         var contacts = new ArrayList<Contact>();
-        var spans = manager.driver.findElements(By.cssSelector("tr"));
+        var rows = manager.driver.findElements(By.cssSelector("tr"));
 
-            for (var _ : spans) {
-                var attr =  manager.driver.findElements(By.cssSelector("td"));
-                for (var attribute : attr) {
-                    var name = attr.get(2).getText();
-                    var lastName = attr.get(1).getText();
-                    var checkbox = attribute.findElement(By.name("selected[]"));
-                    var id = checkbox.getAttribute("value");
-                    contacts.add(new Contact().withID(id).
-                                                withName(name).
-                                                withLastName(lastName));
-                }
-            }
+        for (var row : rows) {
+
+
+            var cells = row.findElements(By.cssSelector("td"));
+
+            if (cells.size() < 3) continue;
+
+            var name = cells.get(2).getText();
+            var lastName = cells.get(1).getText();
+            var address = cells.get(3).getText();
+            var mobilePhone = cells.get(5).getText();
+
+
+            var checkbox = row.findElement(By.name("selected[]"));
+            var id = checkbox.getAttribute("value");
+
+            contacts.add(new Contact().withID(id)
+                    .mainFields(name, lastName, address, mobilePhone));
+
+        }
 
         return contacts;
     }

@@ -46,17 +46,18 @@ public class CreationContact extends TestBase {
         };
         newContactList.sort(compareByID);
         var expectedList = new ArrayList<>(oldContactList);
-        expectedList.add(contact.withID(newContactList.get(newContactList.size() - 1).id()).withName(""));
+        expectedList.add(contact.withID(newContactList.get(newContactList.size() - 1).id()));
         expectedList.sort(compareByID);
         Assertions.assertEquals(newContactList, expectedList);
     }
+
     @ParameterizedTest
     @MethodSource("negativeContactProvider")
     public void testCreationContactNegativeMainFields(Contact contact) {
-        int initialQuantity = app.getContact().contactCounter();
+        var oldContactList = app.getContact().getContactList();
         app.getContact().contactCreation(contact);
-        int newQuantity = app.getContact().contactCounter();
-        Assertions.assertEquals(initialQuantity, newQuantity);
+        var newContactList = app.getContact().getContactList();
+        Assertions.assertEquals(newContactList, oldContactList);
     }
 
 //    @Test
