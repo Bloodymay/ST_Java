@@ -1,10 +1,13 @@
 package applicationManager;
 
 import model.Contact;
+import model.Group;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -122,8 +125,8 @@ public class ContactHelper extends HelperBase {
         fillContactForm(contact);
         submitModifyContact();
     }
-    public void deleteOneContact() {
-        selectContact();
+    public void deleteOneContact(Contact contact) {
+        selectContact(contact);
         deleteContact();
         returnToHomePage();
     }
@@ -159,8 +162,8 @@ public class ContactHelper extends HelperBase {
         clickElement(By.linkText("home page"));
     }
 
-    public void selectContact() {
-        clickElement(By.name("selected[]"));
+    public void selectContact(Contact contact) {
+        clickElement(By.cssSelector(String.format("input[value='%s']", contact.id())));
     }
 
     public void deleteContact() {
@@ -168,4 +171,23 @@ public class ContactHelper extends HelperBase {
     }
 
 
+    public List<Contact> getContactList() {
+        var contacts = new ArrayList<Contact>();
+        var spans = manager.driver.findElements(By.cssSelector("tr"));
+
+            for (var _ : spans) {
+                var attr =  manager.driver.findElements(By.cssSelector("td"));
+                for (var attribute : attr) {
+                    var name = attr.get(2).getText();
+                    var lastName = attr.get(1).getText();
+                    var checkbox = attribute.findElement(By.name("selected[]"));
+                    var id = checkbox.getAttribute("value");
+                    contacts.add(new Contact().withID(id).
+                                                withName(name).
+                                                withLastName(lastName));
+                }
+            }
+
+        return contacts;
+    }
 }

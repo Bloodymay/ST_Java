@@ -1,11 +1,13 @@
 package tests1;
 
 import model.Contact;
+import model.Group;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -36,12 +38,18 @@ public class CreationContact extends TestBase {
     @ParameterizedTest
     @MethodSource("contactProvider")
     public void testCreationContactMainFields(Contact contact) {
-        int initialQuantity = app.getContact().contactCounter();
+        var oldContactList = app.getContact().getContactList();
         app.getContact().contactCreation(contact);
-        int newQuantity = app.getContact().contactCounter();
-        Assertions.assertEquals(initialQuantity + 1, newQuantity);
+        var newContactList = app.getContact().getContactList();
+        Comparator<Contact> compareByID = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newContactList.sort(compareByID);
+        var expectedList = new ArrayList<>(oldContactList);
+        expectedList.add(contact.withID(newContactList.get(newContactList.size() - 1).id()).withName(""));
+        expectedList.sort(compareByID);
+        Assertions.assertEquals(newContactList, expectedList);
     }
-
     @ParameterizedTest
     @MethodSource("negativeContactProvider")
     public void testCreationContactNegativeMainFields(Contact contact) {
