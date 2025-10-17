@@ -19,16 +19,6 @@ public class ContactHelper extends HelperBase {
 
     public void contactCreation(Contact contact) {
         initCreationContact();
-        //waiting(5);
-//        if (contact.getPhoto() != null) {
-//            fillContactFormWithFile(contact);
-//            waiting(5);
-//            submitCreateContact();
-//            waiting(5);
-//            returnToHomePage();
-//
-//        } else
-//
         fillContactForm(contact);
         submitCreateContact();
         returnToHomePage();
@@ -83,14 +73,7 @@ public class ContactHelper extends HelperBase {
 //        return rand.nextInt(12) + 1;
 //    }
 
-    public void fillContactFormWithFile(Contact contact) {
-        typeTextInContact(By.name("firstname"), contact.firstName());
-        typeTextInContact(By.name("lastname"), contact.lastName());
-        typeTextInContact(By.name("address"), contact.address());
-        typeTextInContact(By.name("email"), contact.email());
-        attach(By.name("photo"), contact.photo());
-        typeTextInContact(By.name("homepage"), contact.homepage());
-    }
+
 
     public void attach(By locator, String file) {
         manager.driver.findElement(locator).sendKeys(Paths.get(file).toAbsolutePath().toString());
@@ -106,7 +89,7 @@ public class ContactHelper extends HelperBase {
 
     public void selectAllContacts() {
         if (!manager.isElementPresent(By.linkText("home"))) {
-            manager.driver.get("http://localhost/addressbook");
+            manager.driver.get(manager.properties.getProperty("web.baseUrl"));
         }
         var checkboxes = manager.driver.findElements(By.name("selected[]"));
         for (var checkbox : checkboxes) {
