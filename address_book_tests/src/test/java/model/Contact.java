@@ -24,7 +24,7 @@ public record Contact(String id, String firstName, String middleName, String las
                 this.anniversaryDay, this.anniversaryMonth, this.anniversaryYear, this.group);
     }
 
-    public Contact contactWithPhoto(String firstName, String lastName,String address, String mobilePhone, String photo,String homepage) {
+    public Contact contactWithPhoto(String photo) {
         return new Contact(id, firstName, middleName, lastName, this.nickName,photo, this.position,
                 this.company, address, this.homePhone, mobilePhone, this.workPhone, this.fax,
                 email, this.email2, this.email3, homepage, this.birthDay, this.birthMonth, this.birthYear,

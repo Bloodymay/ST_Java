@@ -17,7 +17,7 @@ public class DeleteGroups extends TestBase {
 //  }
     @Test
     public void removeGroup() {
-        if (app.getGroups().getCount()==0) {
+        if (app.getGroups().getCount() == 0) {
             app.getGroups().creatingGroup(new Group("", "group_name", "group_header", "group_footer"));
         }
         //int groupCount = app.getGroups().getCount();
@@ -29,11 +29,12 @@ public class DeleteGroups extends TestBase {
         var expectedList = new ArrayList<>(oldGroups);
         expectedList.remove(index);
         //int groupCountAfterRemove = app.getGroups().getCount();
-        Assertions.assertEquals(newGroups,expectedList);
+        Assertions.assertEquals(newGroups, expectedList);
     }
+
     @Test
     public void removeAllGroupsAtOnce() {
-        if (app.getGroups().getCount()==0) {
+        if (app.getGroups().getCount() == 0) {
             app.getGroups().creatingGroup(new Group("", "group_name ", "group_header", "group_footer"));
         }
         app.getGroups().removeAllGroups();

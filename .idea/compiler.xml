@@ -3,9 +3,4 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="22" />
   </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="address_book_tests.test" options="--add-exports java.base/sun.util.locale=ALL-UNNAMED" />
-    </option>
-  </component>
 </project>

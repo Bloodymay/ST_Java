@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -42,7 +43,7 @@ public class ContactHelper extends HelperBase {
         //typeTextInContact(By.name("middlename"), contact.middleName());
         typeTextInContact(By.name("lastname"), contact.lastName());
         //typeTextInContact(By.name("nickname"), contact.nickName());
-        //typeTextInContact(By.name("photo"), contact.photo());
+        attach(By.name("photo"), contact.photo());
 //        typeTextInContact(By.name("title"), contact.position());
 //        typeTextInContact(By.name("company"), contact.company());
         typeTextInContact(By.name("address"), contact.address());
@@ -87,12 +88,12 @@ public class ContactHelper extends HelperBase {
         typeTextInContact(By.name("lastname"), contact.lastName());
         typeTextInContact(By.name("address"), contact.address());
         typeTextInContact(By.name("email"), contact.email());
-        addFiles(By.name("photo"), contact.photo());
+        attach(By.name("photo"), contact.photo());
         typeTextInContact(By.name("homepage"), contact.homepage());
     }
 
-    public void addFiles(By locator, String contact) {
-        manager.driver.findElement(locator).sendKeys(contact);
+    public void attach(By locator, String file) {
+        manager.driver.findElement(locator).sendKeys(Paths.get(file).toAbsolutePath().toString());
     }
 
     public void waiting(int seconds) {
@@ -119,7 +120,7 @@ public class ContactHelper extends HelperBase {
 
     }
 
-    public void contactModify(Contact contact,Contact modifiedContact) {
+    public void contactModify(Contact contact, Contact modifiedContact) {
         initModifyContact(contact);
         fillContactForm(modifiedContact);
         submitModifyContact();

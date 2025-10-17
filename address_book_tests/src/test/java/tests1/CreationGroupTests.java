@@ -1,10 +1,20 @@
 package tests1;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import common.Utilities;
 import model.Group;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -12,23 +22,46 @@ import java.util.List;
 
 public class CreationGroupTests extends TestBase {
 
-    public static List<Group> groupProvider() {
-        var result = new ArrayList<Group>(List.of(new Group("", "name", "footr", "header"),
-                new Group("", "name", "barr", "header")
-        ));
-        for (var name : List.of("", "group_name")) {
-            for (var header : List.of("", "header_name")) {
-                for (var footer : List.of("", "footer_name")) {
-                    result.add(new Group().withName(name).withHeader(header).withFooter(footer));
-                }
-            }
-        }
-        for (int i = 0; i < 5; i++) {
-            result.add(new Group()
-                    .withName(stringGenerator(i))
-                    .withHeader(stringGenerator(i))
-                    .withHeader(stringGenerator(i)));
-        }
+    public static List<Group> groupProvider() throws IOException {
+        var result = new ArrayList<Group>();//(List.of(new Group("", "name", "footr", "header"),
+        // new Group("", "name", "barr", "header")
+        //));
+//        for (var name : List.of("", "group_name")) {
+//            for (var header : List.of("", "header_name")) {
+//                for (var footer : List.of("", "footer_name")) {
+//                    result.add(new Group().withName(name).withHeader(header).withFooter(footer));
+//                }
+//            }
+//        }
+//          1й метод чтения из файла
+//        ObjectMapper mapper = new ObjectMapper();
+//        var value = mapper.readValue(new File("groups.json"), new TypeReference<List<Group>>() {});
+//        result.addAll(value);
+
+        //2й метод чтения из файла
+        var xml = Files.readString(Paths.get("groups.xml"));
+
+        var mapper = new XmlMapper();
+        var value = mapper.readValue(xml, new TypeReference<List<Group>>() {
+        });
+        result.addAll(value);
+
+        //3й метод чтения из файла
+//        var json = "";
+//       try(var reader=new FileReader("groups.json");
+//           var breader = new BufferedReader(reader)){
+//           var line = breader.readLine();
+//           while(line!=null){
+//               json += line;
+//               line = breader.readLine();
+//           }
+//
+//       }
+//        ObjectMapper mapper = new ObjectMapper();
+//        var value = mapper.readValue(json, new TypeReference<List<Group>>() {});
+//        result.addAll(value);
+
+
         return result;
 
     }
