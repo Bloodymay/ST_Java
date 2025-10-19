@@ -14,9 +14,9 @@ public class JdbcHelper extends HelperBase {
 
     public List<Group> getGroupList() {
         var groups = new ArrayList<Group>();
-        try (var connection = DriverManager.getConnection(manager.properties.getProperty("db.url"), manager.properties.getProperty("db.user"), "");
+        try (var connection = DriverManager.getConnection(manager.properties.getProperty("db.url"), manager.properties.getProperty("db.user"), manager.properties.getProperty("db.pwd"));
              var statement = connection.createStatement();
-             var result = statement.executeQuery(manager.properties.getProperty("db.requestGroups"))) {
+             var result = statement.executeQuery("select group_id,group_name, group_header,group_footer from group_list")) {
 
             while (result.next()) {
                 groups.add(new Group()
@@ -24,6 +24,25 @@ public class JdbcHelper extends HelperBase {
                         .withName(result.getString("group_name"))
                         .withHeader(result.getString("group_header"))
                         .withFooter(result.getString("group_footer")));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return groups;
+    }
+
+    public List<Group> getGroupListWIthIdAndName() {
+        var groups = new ArrayList<Group>();
+        try (var connection = DriverManager.getConnection(manager.properties.getProperty("db.url"), manager.properties.getProperty("db.user"), manager.properties.getProperty("db.pwd"));
+             var statement = connection.createStatement();
+             var result = statement.executeQuery("select group_id,group_name from group_list")) {
+
+            while (result.next()) {
+                groups.add(new Group()
+                        .withID(result.getString("group_id"))
+                        .withName(result.getString("group_name")));
             }
 
         } catch (SQLException e) {
