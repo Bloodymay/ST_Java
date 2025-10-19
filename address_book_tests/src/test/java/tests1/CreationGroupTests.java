@@ -73,6 +73,12 @@ public class CreationGroupTests extends TestBase {
 
 
     }
+    public static List<Group> singleGroupProvider() {
+        return  List.of(new Group().withName(Utilities.stringGenerator(10))
+                .withHeader(Utilities.stringGenerator(20))
+                .withFooter(Utilities.stringGenerator(30)));
+
+    }
 
 
 //    @Test
@@ -114,6 +120,27 @@ public class CreationGroupTests extends TestBase {
         Assertions.assertEquals(newGroups, expectedList);
 
     }
+
+    @ParameterizedTest
+    @MethodSource("singleGroupProvider")
+    public void canCreateSingleGroupFromDB(Group group) {
+        var oldGroups = app.getJdbc().getGroupList();
+        app.getGroups().creatingGroup(group);
+        var newGroups = app.getJdbc().getGroupList();
+
+        Comparator<Group> compareByID = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+
+        newGroups.sort(compareByID);
+        var maxID = newGroups.get(newGroups.size() - 1).id();
+        var expectedList = new ArrayList<>(oldGroups);
+        expectedList.add(group.withID(String.valueOf(newGroups.get(Integer.parseInt(maxID)))));
+        expectedList.sort(compareByID);
+        Assertions.assertEquals(newGroups, expectedList);
+
+    }
+
 
     @ParameterizedTest
     @MethodSource("negativeGroupProvider")

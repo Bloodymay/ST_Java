@@ -16,7 +16,7 @@ public class AppManager {
     private GroupHelper groups;
     private ContactHelper contacts;
     public Properties properties;
-
+    private JdbcHelper jdbc;
     public void initialization(String browser, Properties properties) {
         this.properties = properties;
         if (driver == null) {
@@ -40,6 +40,13 @@ public class AppManager {
         }
         return session;
 
+    }
+    public JdbcHelper getJdbc() {
+        if (jdbc == null) {
+            jdbc = new JdbcHelper(this);
+
+        }
+        return jdbc;
     }
 
     public GroupHelper getGroups() {

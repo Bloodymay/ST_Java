@@ -8,8 +8,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
+
 
 public class GroupHelper extends HelperBase {
+
 
     public GroupHelper(AppManager manager) {
         super(manager);
@@ -53,8 +57,9 @@ public class GroupHelper extends HelperBase {
         waiting(1);
         fillGroupForm(modifiedGroup);
         submitGroupModification();
-        waiting(1);
+        waiting(3);
         returnsToGroupPage();
+        waiting(5);
 
 
     }
@@ -70,7 +75,7 @@ public class GroupHelper extends HelperBase {
 
     private void returnsToGroupPage() {
         if (!manager.isElementPresent(By.name("delete"))) {
-            manager.driver.get("http://localhost/addressbook/group.php");
+            manager.driver.get(manager.properties.getProperty("web.groupsUrl"));
         } else {
             clickElement(By.linkText("group page"));
         }
@@ -119,7 +124,7 @@ public class GroupHelper extends HelperBase {
 
     public void openPage() throws InterruptedException {
         if (!manager.isElementPresent(By.name("delete"))) {
-            manager.driver.get("http://localhost/addressbook/group.php");
+            manager.driver.get(manager.properties.getProperty("web.baseUrl")+"/group.php");//group.php
             Thread.sleep(15000);
         }
 
