@@ -147,6 +147,30 @@ public class CreationGroupTests extends TestBase {
 
     }
 
+    @ParameterizedTest
+    @MethodSource("singleGroupProvider")
+    public void canCreateSingleGroupWithHbn(Group group) {
+        var oldGroups = app.getHibernate().getGroupsListHnt();
+        app.getGroups().creatingGroup(group);
+        var newGroups = app.getHibernate().getGroupsListHnt();
+
+        Comparator<Group> compareByID = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newGroups.sort(compareByID);
+        var maxID = newGroups.get(newGroups.size() - 1).id();
+        var expectedList = new ArrayList<>(oldGroups);
+        expectedList.add(group.withID(maxID));
+        expectedList.sort(compareByID);
+        //var newUIgroups = app.getGroups().getList();
+        //var newDBGroups = app.getJdbc().getGroupListWIthIdAndName();
+        //newUIgroups.sort(compareByID);
+        //newDBGroups.sort(compareByID);
+        Assertions.assertEquals(newGroups, expectedList);
+        //Assertions.assertEquals(newUIgroups, newDBGroups);
+
+    }
+
     @Test
     public void groupMatchingCheck() { //Проверка соответствия визуального представления списку групп в БД
 

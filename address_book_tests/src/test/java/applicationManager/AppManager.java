@@ -17,6 +17,8 @@ public class AppManager {
     private ContactHelper contacts;
     public Properties properties;
     private JdbcHelper jdbc;
+    private HibernateHelper hibernate;
+
     public void initialization(String browser, Properties properties) {
         this.properties = properties;
         if (driver == null) {
@@ -47,6 +49,13 @@ public class AppManager {
 
         }
         return jdbc;
+    }
+    public HibernateHelper getHibernate() {
+        if (hibernate == null) {
+            hibernate = new HibernateHelper(this);
+
+        }
+        return hibernate;
     }
 
     public GroupHelper getGroups() {
