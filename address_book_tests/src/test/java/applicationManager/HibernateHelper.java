@@ -1,6 +1,5 @@
 package applicationManager;
 import applicationManager.hbn.GroupRecord;
-import model.Contact;
 import model.Group;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
@@ -36,9 +35,30 @@ public class HibernateHelper extends HelperBase{
         return new Group("" + record.id, record.name, record.header, record.footer);
     }
 
+    private static GroupRecord convert2(Group group) {
+        var id = group.id();
+        if ("".equals(id)) {
+            id = "0";
+        }
+        return new GroupRecord(Integer.parseInt(id), group.name(), group.header(), group.footer());
+    }
+
+
     public List<Group> getGroupsListHnt() {
         return convertList(sessionFactory.fromSession(session -> { return  session.createQuery("from GroupRecord ", GroupRecord.class).list();}));
 
     }
 
+    public long getGroupCount() {
+        return (sessionFactory.fromSession(session -> { return  session.createQuery("select count (*) from GroupRecord ", Long.class).getSingleResult();}));
+    }
+
+    public void creatingGroup(Group group) {
+        sessionFactory.inSession(session -> {
+            session.getTransaction().begin();
+            session.persist(convert2(group));
+            session.getTransaction().commit();
+        });
+
+    }
 }

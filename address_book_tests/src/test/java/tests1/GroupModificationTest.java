@@ -10,16 +10,16 @@ import java.util.Random;
 
 public class GroupModificationTest extends TestBase {
     @Test
-    void canGroupModifyGroup() {
-        if (app.getGroups().getCount()==0) {
-            app.getGroups().creatingGroup(new Group("", "Name", "Header", "Footer"));
+    void canGroupModifyGroup() { //обеспечение предусловия через DB посредством Hibernate и сравнение списков через hbn
+        if (app.getHibernate().getGroupCount() == 0) {
+            app.getHibernate().creatingGroup(new Group("", "group_name ", "group_header", "group_footer"));
         }
         var newGroupName =  new Group().withName("Modify name");
-        var oldGroups = app.getGroups().getList();
+        var oldGroups = app.getHibernate().getGroupsListHnt();
         var rnd = new Random();
         var index = rnd.nextInt(oldGroups.size());
         app.getGroups().modifyGroup(oldGroups.get(index), newGroupName);
-        var newGroups = app.getGroups().getList();
+        var newGroups = app.getHibernate().getGroupsListHnt();
         var expectedList = new ArrayList<>(oldGroups);
         expectedList.set(index, newGroupName.withID(oldGroups.get(index).id()));
         Comparator<Group> compareByID = (o1, o2) -> {
