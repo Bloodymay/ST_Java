@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import common.Utilities;
 import model.Contact;
+import model.Group;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -76,6 +77,23 @@ public class CreationContact extends TestBase {
         app.getContact().contactCreation(contact);
         var newContactList = app.getContact().getContactList();
         Assertions.assertEquals(newContactList, oldContactList);
+    }
+
+    @Test
+    public void canCreateContactInGroup() {
+        var contact = new Contact()
+                .mainFields(Utilities.stringGenerator(4), Utilities.stringGenerator(10)
+                        , Utilities.stringGenerator(20), Utilities.stringGenerator(10))
+                .contactWithPhoto(Utilities.getRandomFile("src/test/resources/images"));
+        if (app.getHibernate().getGroupCount() == 0) {
+            app.getHibernate().creatingGroup(new Group("", "group_name ", "group_header", "group_footer"));
+        }
+        var group = app.getHibernate().getGroupsListHnt().get(0);
+        var oldRelated = app.getHibernate().getContactsInGroup(group);
+        app.getContact().contactCreationWithGroup(contact, group);
+        var newRelated = app.getHibernate().getContactsInGroup(group);
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
+
     }
 
 //    @Test

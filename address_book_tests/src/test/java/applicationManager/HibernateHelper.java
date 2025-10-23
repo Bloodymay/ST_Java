@@ -1,5 +1,7 @@
 package applicationManager;
+import applicationManager.hbn.ContactRecord;
 import applicationManager.hbn.GroupRecord;
+import model.Contact;
 import model.Group;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
@@ -15,34 +17,68 @@ public class HibernateHelper extends HelperBase{
         super(manager);
         sessionFactory =
                 new Configuration()
-                        //.addAnnotatedClass(Group.class)
+                        .addAnnotatedClass(ContactRecord.class)
                         .addAnnotatedClass(GroupRecord.class)
                         .setProperty(AvailableSettings.URL,manager.properties.getProperty("db.url"))
                         .setProperty(AvailableSettings.USER,manager.properties.getProperty("db.username"))
                         .setProperty(AvailableSettings.PASS,manager.properties.getProperty("db.pwd"))
                         .buildSessionFactory();
     }
-    static List<Group> convertList(List<GroupRecord> records) {
-        List<Group> result  = new ArrayList<>();
-        for (GroupRecord record : records) {
-            result.add(convert(record));
+    static List<Contact> convertContactList(List<ContactRecord> records) {
+        List<Contact> result  = new ArrayList<>();
+        for (ContactRecord record : records) {
+            result.add(convertRecordToContact(record));
         }
         return result;
 
     }
 
-    private static Group convert(GroupRecord record) {
+    private static Contact convertRecordToContact(ContactRecord record) {
+        return new Contact().mainFieldsWithID("" + record.id, record.firstname, record.lastname, record.address, record.mobile);
+    }
+
+    private static ContactRecord convertContactToRecord(Contact contact) {
+        var id = contact.id();
+        if ("".equals(id)) {
+            id = "0";
+        }
+        return new ContactRecord(Integer.parseInt(id), contact.firstName(), contact.lastName(), contact.address(), contact.mobilePhone());
+    }
+    public void creatingContact(Contact contact) {
+        sessionFactory.inSession(session -> {
+            session.getTransaction().begin();
+            session.persist(convertContactToRecord(contact));
+            session.getTransaction().commit();
+        });
+    }
+    static List<Group> convertList(List<GroupRecord> records) {
+        List<Group> result  = new ArrayList<>();
+        for (GroupRecord record : records) {
+            result.add(convertRecordToGroup(record));
+        }
+        return result;
+
+    }
+
+    private static Group convertRecordToGroup(GroupRecord record) {
         return new Group("" + record.id, record.name, record.header, record.footer);
     }
 
-    private static GroupRecord convert2(Group group) {
+    private static GroupRecord convertGroupToRecord(Group group) {
         var id = group.id();
         if ("".equals(id)) {
             id = "0";
         }
         return new GroupRecord(Integer.parseInt(id), group.name(), group.header(), group.footer());
     }
+    public List<Contact> getContactsListHnt() {
+        return convertContactList(sessionFactory.fromSession(session -> { return  session.createQuery("from ContactRecord", ContactRecord.class).list();}));
 
+    }
+
+    public long getContactCount() {
+        return (sessionFactory.fromSession(session -> { return  session.createQuery("select count (*) from ContactRecord ", Long.class).getSingleResult();}));
+    }
 
     public List<Group> getGroupsListHnt() {
         return convertList(sessionFactory.fromSession(session -> { return  session.createQuery("from GroupRecord ", GroupRecord.class).list();}));
@@ -56,8 +92,15 @@ public class HibernateHelper extends HelperBase{
     public void creatingGroup(Group group) {
         sessionFactory.inSession(session -> {
             session.getTransaction().begin();
-            session.persist(convert2(group));
+            session.persist(convertGroupToRecord(group));
             session.getTransaction().commit();
+        });
+
+    }
+
+    public List<Contact> getContactsInGroup(Group group) {
+        return  sessionFactory.fromSession(session -> {
+            return convertContactList(session.get(GroupRecord.class, group.id()).contacts);
         });
 
     }

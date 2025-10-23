@@ -51,4 +51,19 @@ public class JdbcHelper extends HelperBase {
 
         return groups;
     }
+
+    public void checkConsistensy() throws SQLException {
+        try (var connection = DriverManager.getConnection(manager.properties.getProperty("db.url"), manager.properties.getProperty("db.user"), manager.properties.getProperty("db.pwd"));
+             var statement = connection.createStatement();
+             var result = statement.executeQuery("select * from address_in_groups ag LEFT JOIN addressbook ab ON ab.id=ag.id WHERE ab.id IS NULL")) {
+            if (result.next()) {
+                throw new IllegalStateException("DB is corrupted");
+            }
+
+
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

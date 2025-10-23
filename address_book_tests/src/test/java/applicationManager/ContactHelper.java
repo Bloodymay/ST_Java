@@ -1,6 +1,7 @@
 package applicationManager;
 
 import model.Contact;
+import model.Group;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -23,6 +24,19 @@ public class ContactHelper extends HelperBase {
         submitCreateContact();
         returnToHomePage();
     }
+    public void contactCreationWithGroup(Contact contact, Group group) {
+        initCreationContact();
+        fillContactForm(contact);
+        selectGroup(group);
+        submitCreateContact();
+        returnToHomePage();
+    }
+
+    private void selectGroup(Group group) {
+        new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
+
+    }
+
 
     public void initCreationContact() {
         clickElement(By.linkText("add new"));

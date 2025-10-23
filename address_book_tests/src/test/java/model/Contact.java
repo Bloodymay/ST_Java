@@ -56,4 +56,11 @@ public record Contact(String id, String firstName, String middleName, String las
                 email, this.email2, this.email3, homepage, this.birthDay, this.birthMonth, this.birthYear,
                 this.anniversaryDay, this.anniversaryMonth, this.anniversaryYear, this.group);
     }
+    public Contact mainFieldsWithID(String id,String firstName, String lastName,String address, String mobilePhone) {
+        return new Contact(id, firstName, this.middleName, lastName, this.nickName, this.photo, this.position,
+                this.company, address, this.homePhone, mobilePhone, this.workPhone, this.fax,
+                email, this.email2, this.email3, homepage, this.birthDay, this.birthMonth, this.birthYear,
+                this.anniversaryDay, this.anniversaryMonth, this.anniversaryYear, this.group);
+    }
+
 }
