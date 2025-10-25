@@ -44,7 +44,7 @@ public class CreationContact extends TestBase {
     }
 
     public static List<Contact> negativeContactProvider() {
-        var result = new ArrayList<Contact>(List.of(new Contact().mainFields("Mayya'", "Matveeva", "Kislovodsk", "204551248612")));
+        var result = new ArrayList<Contact>(List.of(new Contact().mainFields("Mayya'", "Matveeva", "Kislovodsk", "204551248612").contactWithPhoto(Utilities.getRandomFile("src/test/resources/images"))));
         return result;
     }
 
@@ -57,9 +57,9 @@ public class CreationContact extends TestBase {
     @ParameterizedTest
     @MethodSource("contactProvider")
     public void testCreationContactMainFields(Contact contact) {
-        var oldContactList = app.getContact().getContactList();
+        var oldContactList = app.getHibernate().getContactsListHnt();//var oldContactList = app.getContact().getContactList();
         app.getContact().contactCreation(contact);
-        var newContactList = app.getContact().getContactList();
+        var newContactList = app.getHibernate().getContactsListHnt();//app.getContact().getContactList();
         Comparator<Contact> compareByID = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
@@ -73,9 +73,9 @@ public class CreationContact extends TestBase {
     @ParameterizedTest
     @MethodSource("negativeContactProvider")
     public void testCreationContactNegativeMainFields(Contact contact) {
-        var oldContactList = app.getContact().getContactList();
-        app.getContact().contactCreation(contact);
-        var newContactList = app.getContact().getContactList();
+        var oldContactList = app.getHibernate().getContactsListHnt();//app.getContact().getContactList();
+        app.getContact().contactCreation(contact); //использован метод из contactHelper т.к. напрямую в базу записывается название группы через апостроф и тест становится бесполезным
+        var newContactList = app.getHibernate().getContactsListHnt();//app.getContact().getContactList();
         Assertions.assertEquals(newContactList, oldContactList);
     }
 

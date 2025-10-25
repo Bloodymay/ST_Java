@@ -102,6 +102,12 @@ public class HibernateHelper extends HelperBase{
         return  sessionFactory.fromSession(session -> {
             return convertContactList(session.get(GroupRecord.class, group.id()).contacts);
         });
+    }
+    public void refreshing(){
+        manager.driver.navigate().refresh();
+    }
 
+    public int contactCounter() {
+        return getContactsListHnt().size();
     }
 }

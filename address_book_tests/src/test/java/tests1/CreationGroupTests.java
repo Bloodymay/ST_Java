@@ -124,6 +124,24 @@ public class CreationGroupTests extends TestBase {
     }
 
     @ParameterizedTest
+    @MethodSource("groupProvider")
+    public void canCreateMultipleGroupsHbn(Group group) { //тест на создание нескольких групп посредством Hibernate
+        var oldGroups = app.getHibernate().getGroupsListHnt();
+        app.getHibernate().creatingGroup(group);
+        var newGroups = app.getHibernate().getGroupsListHnt();
+
+        Comparator<Group> compareByID = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newGroups.sort(compareByID);
+        var expectedList = new ArrayList<>(oldGroups);
+        expectedList.add(group.withID(newGroups.get(newGroups.size() - 1).id()));
+        expectedList.sort(compareByID);
+        Assertions.assertEquals(newGroups, expectedList);
+
+    }
+
+    @ParameterizedTest
     @MethodSource("singleGroupProvider")
     public void canCreateSingleGroupFromDB(Group group) {
         var oldGroups = app.getJdbc().getGroupList();
@@ -162,12 +180,12 @@ public class CreationGroupTests extends TestBase {
         var expectedList = new ArrayList<>(oldGroups);
         expectedList.add(group.withID(maxID));
         expectedList.sort(compareByID);
-        //var newUIgroups = app.getGroups().getList();
-        //var newDBGroups = app.getJdbc().getGroupListWIthIdAndName();
-        //newUIgroups.sort(compareByID);
-        //newDBGroups.sort(compareByID);
+        var newUIgroups = app.getGroups().getList();
+        var newDBGroups = app.getJdbc().getGroupListWIthIdAndName();
+        newUIgroups.sort(compareByID);
+        newDBGroups.sort(compareByID);
         Assertions.assertEquals(newGroups, expectedList);
-        //Assertions.assertEquals(newUIgroups, newDBGroups);
+        Assertions.assertEquals(newUIgroups, newDBGroups);
 
     }
 
@@ -197,5 +215,18 @@ public class CreationGroupTests extends TestBase {
         Assertions.assertEquals(newGroups, oldGroups);
 
     }
+
+    @ParameterizedTest
+    @MethodSource("negativeGroupProvider") // тест на несоздание группы посредством Hibernate
+    public void canNotCreateGroupHbn(Group group) throws InterruptedException {
+
+        var oldGroups = app.getHibernate().getGroupsListHnt();
+        app.getGroups().creatingGroup(group);//использован метод из groupHelper т.к. напрямую в базу записывается название группы через апостроф и тест становится бесполезным
+        var newGroups = app.getHibernate().getGroupsListHnt();
+        app.getGroups().openPage();
+        Assertions.assertEquals(newGroups, oldGroups);
+
+    }
+
 
 }
