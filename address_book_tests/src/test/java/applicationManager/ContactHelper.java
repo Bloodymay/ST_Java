@@ -24,6 +24,7 @@ public class ContactHelper extends HelperBase {
         submitCreateContact();
         returnToHomePage();
     }
+
     public void contactCreationWithGroup(Contact contact, Group group) {
         initCreationContact();
         fillContactForm(contact);
@@ -33,7 +34,20 @@ public class ContactHelper extends HelperBase {
     }
 
     private void selectGroup(Group group) {
+        //goToTheHomePage();
         new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
+
+    }
+
+    public void selectGroupOnHomepage(Group group) {
+        //goToTheHomePage();
+        new Select(manager.driver.findElement(By.name("to_group"))).selectByValue(group.id());
+
+    }
+
+    public void bottomSelectGroupOnHomepage(Group group) {
+        //goToTheHomePage();
+        new Select(manager.driver.findElement(By.name("group"))).selectByValue(group.id());
 
     }
 
@@ -86,7 +100,6 @@ public class ContactHelper extends HelperBase {
 //        List months = manager.driver.findElements(By.name("month"));
 //        return rand.nextInt(12) + 1;
 //    }
-
 
 
     public void attach(By locator, String file) {
@@ -169,6 +182,23 @@ public class ContactHelper extends HelperBase {
         clickElement(By.name("delete"));
     }
 
+    public void initDeleteContactFromGroup() {
+        clickElement(By.name("remove"));
+    }
+
+    public void deleteContactFromGroup(Group group, Contact contact) {
+        bottomSelectGroupOnHomepage(group);
+        selectContact(contact);
+        initDeleteContactFromGroup();
+    }
+
+    public void addContactToGroup(Contact contact, Group group) {
+        goToTheHomePage();
+        selectContact(contact);
+        selectGroupOnHomepage(group);
+        clickElement(By.name("add"));
+    }
+
 
     //    public List<Contact> getContactList() {
 //        var contacts = new ArrayList<Contact>();
@@ -215,5 +245,11 @@ public class ContactHelper extends HelperBase {
         }
 
         return contacts;
+    }
+
+    public void selectGroupAllOnHomepage() {
+        goToTheHomePage();
+        new Select(manager.driver.findElement(By.name("group"))).selectByContainsVisibleText("[all]");
+
     }
 }

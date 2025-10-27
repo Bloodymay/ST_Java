@@ -19,6 +19,7 @@ public class HibernateHelper extends HelperBase{
                 new Configuration()
                         .addAnnotatedClass(ContactRecord.class)
                         .addAnnotatedClass(GroupRecord.class)
+                        //.addAnnotatedClass(ContactGroupRecord.class)
                         .setProperty(AvailableSettings.URL,manager.properties.getProperty("db.url"))
                         .setProperty(AvailableSettings.USER,manager.properties.getProperty("db.username"))
                         .setProperty(AvailableSettings.PASS,manager.properties.getProperty("db.pwd"))
@@ -84,6 +85,11 @@ public class HibernateHelper extends HelperBase{
         return convertList(sessionFactory.fromSession(session -> { return  session.createQuery("from GroupRecord ", GroupRecord.class).list();}));
 
     }
+//    public List<ContactGroupRecord> getRelationsListHnt() {
+//        return (sessionFactory.fromSession(session -> { return  session.createQuery("from ContactGroupRecord", ContactGroupRecord.class).list();}));
+//    }
+
+
 
     public long getGroupCount() {
         return (sessionFactory.fromSession(session -> { return  session.createQuery("select count (*) from GroupRecord ", Long.class).getSingleResult();}));
@@ -103,9 +109,7 @@ public class HibernateHelper extends HelperBase{
             return convertContactList(session.get(GroupRecord.class, group.id()).contacts);
         });
     }
-    public void refreshing(){
-        manager.driver.navigate().refresh();
-    }
+
 
     public int contactCounter() {
         return getContactsListHnt().size();

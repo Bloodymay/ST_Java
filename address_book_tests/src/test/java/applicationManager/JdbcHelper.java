@@ -1,5 +1,6 @@
 package applicationManager;
 
+import model.Contact;
 import model.Group;
 
 import java.sql.DriverManager;
@@ -61,9 +62,29 @@ public class JdbcHelper extends HelperBase {
             }
 
 
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean checkContactInGroup(Group group) throws SQLException {
+        var group_id = Integer.parseInt(group.id());
+        String sql = "SELECT COUNT(*) FROM address_in_groups WHERE group_id = ?";
+
+        try (var connection = DriverManager.getConnection(manager.properties.getProperty("db.url"), manager.properties.getProperty("db.user"), manager.properties.getProperty("db.pwd"));
+             var statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, group_id);
+            var result = statement.executeQuery();
+
+            if (result.next()) {
+                return result.getInt(1) > 0; // если count > 0, значит записи есть
+            }
+            return false;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
