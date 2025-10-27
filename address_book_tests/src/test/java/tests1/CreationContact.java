@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 
 public class CreationContact extends TestBase {
@@ -94,6 +95,25 @@ public class CreationContact extends TestBase {
         var newRelated = app.getHibernate().getContactsInGroup(group);
         Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
 
+    }
+    @Test
+    public void canAddContactToGroup() {
+        if (app.getHibernate().getGroupCount() == 0) {
+            app.getHibernate().creatingGroup(new Group("", "group_name ", "group_header", "group_footer"));
+        }
+        if (!app.getContact().isContactPresent()) {
+            app.getHibernate().creatingContact(new Contact().mainFields("Mayya", "Matveeva", "улица Пушкина,дом Колотушкина", "89524582455").contactWithPhoto(Utilities.getRandomFile("src/test/resources/images")));
+            app.getContact().goToTheHomePage();
+        }
+        var group = app.getHibernate().getGroupsListHnt().get(0);
+        var contactList = app.getHibernate().getContactsListHnt();
+        var oldRelated = app.getHibernate().getContactsInGroup(group);
+        var rnd = new Random();
+        var index = rnd.nextInt(app.getHibernate().getContactsListHnt().size());
+        var contact = contactList.get(index);
+        app.getContact().addContactToGroup(contact, group);
+        var newRelated = app.getHibernate().getContactsInGroup(group);
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
     }
 
 //    @Test
