@@ -15,6 +15,7 @@
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.19.0" level="project" />
     <orderEntry type="library" name="Gradle: com.mysql:mysql-connector-j:9.4.0" level="project" />
     <orderEntry type="library" name="Gradle: org.hibernate.orm:hibernate-core:7.1.4.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.projectlombok:lombok:1.18.30" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.19.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.19.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.woodstox:woodstox-core:7.1.0" level="project" />

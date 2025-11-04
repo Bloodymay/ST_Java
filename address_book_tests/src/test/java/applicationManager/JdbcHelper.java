@@ -3,8 +3,7 @@ package applicationManager;
 import model.Contact;
 import model.Group;
 
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +66,7 @@ public class JdbcHelper extends HelperBase {
         }
     }
 
-    public boolean checkContactInGroup(Group group) throws SQLException {
+    public boolean checkContactsInGroup(Group group) throws SQLException {
         var group_id = Integer.parseInt(group.id());
         String sql = "SELECT COUNT(*) FROM address_in_groups WHERE group_id = ?";
 
@@ -81,10 +80,40 @@ public class JdbcHelper extends HelperBase {
                 return result.getInt(1) > 0; // если count > 0, значит записи есть
             }
             return false;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
+    public boolean checkCertainContactInGroup(Group group, Contact contact) throws SQLException {
+        var idList = getContactIdList(group);
+        if (idList.size() == 0) {
+            return true;
+        }
+        if (idList.contains(Integer.parseInt(contact.id()))) {
+            return true;
+        } else return false;
+    }
 
+    public List<Integer> getContactIdList(Group group) throws SQLException {
+        int group_id = Integer.parseInt(group.id());
+        String sql = "SELECT id FROM address_in_groups WHERE group_id = ?";
+
+        List<Integer> idList = new ArrayList<>();
+
+        try (Connection connection = DriverManager.getConnection(
+                manager.properties.getProperty("db.url"),
+                manager.properties.getProperty("db.user"),
+                manager.properties.getProperty("db.pwd"));
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, group_id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    idList.add(id);
+                }
+            }
+        }
+        return idList;
+    }
 }

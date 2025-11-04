@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Random;
 
 public class DeleteContact extends TestBase {
@@ -57,7 +56,7 @@ public class DeleteContact extends TestBase {
         }
         var group = app.getHibernate().getGroupsListHnt().get(0);
         var oldRelated = app.getHibernate().getContactsInGroup(group);
-        var relations = app.getJdbc().checkContactInGroup(group);
+        var relations = app.getJdbc().checkContactsInGroup(group);
         var index1 = 0;
         if (oldRelated.size() == 0 || relations == false) {
             app.getHibernate().getContactsListHnt();

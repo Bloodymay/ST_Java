@@ -1,16 +1,18 @@
 package applicationManager.hbn;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Entity
 @Table(name="addressbook")
+@Getter
+@Setter
 public class ContactRecord {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     //@Column(name="group_id")
     public int id;
     //@Column(name="firstname")
@@ -42,7 +44,10 @@ public class ContactRecord {
     public Date created = new Date();
     public Date modified = new Date();
 
-//id, firstName, this.middleName, lastName, this.nickName, this.photo, this.position,
+    public int getID() {
+        return id;
+    }
+    //id, firstName, this.middleName, lastName, this.nickName, this.photo, this.position,
 //                this.company, address, this.homePhone, mobilePhone, this.workPhone, this.fax,
 //                email, this.email2, this.email3, homepage, this.birthDay, this.birthMonth, this.birthYear,
 //                this.anniversaryDay, this.anniversaryMonth, this.anniversaryYear, this.group

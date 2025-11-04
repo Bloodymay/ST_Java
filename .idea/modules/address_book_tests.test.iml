@@ -16,6 +16,7 @@
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.19.0" level="project" />
     <orderEntry type="library" name="Gradle: com.mysql:mysql-connector-j:9.4.0" level="project" />
     <orderEntry type="library" name="Gradle: org.hibernate.orm:hibernate-core:7.1.4.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.projectlombok:lombok:1.18.30" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter:5.10.0" level="project" />
     <orderEntry type="library" name="Gradle: org.seleniumhq.selenium:selenium-java:4.35.0" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.19.0" level="project" />

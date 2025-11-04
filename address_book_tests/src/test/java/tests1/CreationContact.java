@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -96,13 +97,14 @@ public class CreationContact extends TestBase {
         Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
 
     }
+
     @Test
-    public void canAddContactToGroup() {
+    public void canAddContactToGroup() throws SQLException {
         if (app.getHibernate().getGroupCount() == 0) {
             app.getHibernate().creatingGroup(new Group("", "group_name ", "group_header", "group_footer"));
         }
         if (!app.getContact().isContactPresent()) {
-            app.getHibernate().creatingContact(new Contact().mainFields("Mayya", "Matveeva", "улица Пушкина,дом Колотушкина", "89524582455").contactWithPhoto(Utilities.getRandomFile("src/test/resources/images")));
+            app.getHibernate().creatingContact(new Contact().mainFields(Utilities.stringGenerator(10), Utilities.stringGenerator(15), Utilities.stringGenerator(25), Utilities.phoneGenerator(10)).contactWithPhoto(Utilities.getRandomFile("src/test/resources/images")));
             app.getContact().goToTheHomePage();
         }
         var group = app.getHibernate().getGroupsListHnt().get(0);
@@ -111,6 +113,15 @@ public class CreationContact extends TestBase {
         var rnd = new Random();
         var index = rnd.nextInt(app.getHibernate().getContactsListHnt().size());
         var contact = contactList.get(index);
+
+        if (app.getJdbc().checkCertainContactInGroup(group, contact) == true) {
+            index = app.getHibernate().creatingContactAndReturnID(new Contact().mainFields(Utilities.stringGenerator(10),
+                            Utilities.stringGenerator(15),
+                            Utilities.stringGenerator(25),
+                            Utilities.phoneGenerator(10))
+                    .contactWithPhoto(Utilities.getRandomFile("src/test/resources/images")));
+            contact = app.getHibernate().getContactById(index);
+        }
         app.getContact().addContactToGroup(contact, group);
         var newRelated = app.getHibernate().getContactsInGroup(group);
         Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
