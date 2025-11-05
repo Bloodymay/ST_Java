@@ -40,7 +40,9 @@ public class HibernateHelper extends HelperBase {
     }
 
     private static Contact convertRecordToContact(ContactRecord record) {
-        return new Contact().mainFieldsWithID("" + record.id, record.firstname, record.lastname, record.address, record.mobile);
+        return new Contact()
+                .mainFieldsWithID("" + record.id, record.firstname, record.lastname, record.address, record.mobile)
+                .withHomePhone(record.home).withWorkPhone(record.work).withSecondaryPhone(record.secondary);
     }
 
     private static ContactRecord convertContactToRecord(Contact contact) {

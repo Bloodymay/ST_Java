@@ -1,5 +1,6 @@
 package tests1;
 
+import common.Utilities;
 import model.Group;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
+import java.util.Set;
 
 public class GroupModificationTest extends TestBase {
     @Test
@@ -14,7 +16,7 @@ public class GroupModificationTest extends TestBase {
         if (app.getHibernate().getGroupCount() == 0) {
             app.getHibernate().creatingGroup(new Group("", "group_name ", "group_header", "group_footer"));
         }
-        var newGroupName =  new Group().withName("Modify name");
+        var newGroupName =  new Group().withName(Utilities.stringGenerator(12));
         var oldGroups = app.getHibernate().getGroupsListHnt();
         var rnd = new Random();
         var index = rnd.nextInt(oldGroups.size());
@@ -22,11 +24,11 @@ public class GroupModificationTest extends TestBase {
         var newGroups = app.getHibernate().getGroupsListHnt();
         var expectedList = new ArrayList<>(oldGroups);
         expectedList.set(index, newGroupName.withID(oldGroups.get(index).id()));
-        Comparator<Group> compareByID = (o1, o2) -> {
-            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-        };
-        newGroups.sort(compareByID);
-        expectedList.sort(compareByID);
-        Assertions.assertEquals(expectedList, newGroups);
+//        Comparator<Group> compareByID = (o1, o2) -> { сортировка посредством компаратора
+//            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+//        };
+//        newGroups.sort(compareByID);
+//        expectedList.sort(compareByID);
+        Assertions.assertEquals(Set.copyOf(expectedList), Set.copyOf(newGroups)); // без сортировки, черехз сравнение множеств
     }
 }

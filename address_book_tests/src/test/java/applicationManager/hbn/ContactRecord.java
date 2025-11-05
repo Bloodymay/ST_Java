@@ -43,6 +43,8 @@ public class ContactRecord {
     public String ayear = "";
     public Date created = new Date();
     public Date modified = new Date();
+    @Column(name = "phone2")
+    public String secondary="";
 
     public int getID() {
         return id;

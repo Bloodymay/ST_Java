@@ -1,7 +1,6 @@
 package tests1;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import common.Utilities;
 import model.Group;
@@ -10,16 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -83,7 +81,7 @@ public class CreationGroupTests extends TestBase {
 //                .withFooter(Utilities.stringGenerator(30)));
 //
 //    }
-    public static Stream<Group> singleGroupProvider() { //Создание группы через Stream
+    public static Stream<Group> randomGroupsProvider() { //Создание группы через Stream
         Supplier<Group> randomGroup = () -> new Group()
                 .withName(Utilities.stringGenerator(10))
                 .withHeader(Utilities.stringGenerator(20))
@@ -151,31 +149,26 @@ public class CreationGroupTests extends TestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("singleGroupProvider")
+    @MethodSource("randomGroupsProvider")
     public void canCreateSingleGroupFromDB(Group group) {
         var oldGroups = app.getJdbc().getGroupList();
         app.getGroups().creatingGroup(group);
         var newGroups = app.getJdbc().getGroupList();
-
-        Comparator<Group> compareByID = (o1, o2) -> {
-            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-        };
-        newGroups.sort(compareByID);
         var maxID = newGroups.get(newGroups.size() - 1).id();
+        var extraGroups = newGroups.stream().filter(g -> !oldGroups.contains(g)).toList();
+        var newId = extraGroups.get(0).id();
         var expectedList = new ArrayList<>(oldGroups);
         expectedList.add(group.withID(maxID));
-        expectedList.sort(compareByID);
+
         //var newUIgroups = app.getGroups().getList();
         //var newDBGroups = app.getJdbc().getGroupListWIthIdAndName();
-        //newUIgroups.sort(compareByID);
-        //newDBGroups.sort(compareByID);
-        Assertions.assertEquals(newGroups, expectedList);
-        //Assertions.assertEquals(newUIgroups, newDBGroups);
+        Assertions.assertEquals(Set.copyOf(newGroups), Set.copyOf(expectedList));
+        //Assertions.assertEquals(Set.copyOf(newUIgroups), Set.copyOf(newDBGroups));
 
     }
 
     @ParameterizedTest
-    @MethodSource("singleGroupProvider")
+    @MethodSource("randomGroupsProvider")
     public void canCreateSingleGroupWithHbn(Group group) {
         var oldGroups = app.getHibernate().getGroupsListHnt();
         app.getGroups().creatingGroup(group);
@@ -193,9 +186,9 @@ public class CreationGroupTests extends TestBase {
         var newDBGroups = app.getJdbc().getGroupListWIthIdAndName();
         newUIgroups.sort(compareByID);
         newDBGroups.sort(compareByID);
-        Assertions.assertEquals(newGroups, expectedList);
+        Assertions.assertEquals(Set.copyOf(newGroups), Set.copyOf(expectedList));
         Assertions.assertEquals(newUIgroups, newDBGroups);
-
+        Assertions.assertEquals(Set.copyOf(newUIgroups), Set.copyOf(newDBGroups));
     }
 
     @Test

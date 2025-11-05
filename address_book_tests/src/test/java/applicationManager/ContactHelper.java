@@ -252,4 +252,9 @@ public class ContactHelper extends HelperBase {
         new Select(manager.driver.findElement(By.name("group"))).selectByContainsVisibleText("[all]");
 
     }
+
+    public String getPhones(Contact contact) {
+        return manager.driver.findElement(By.xpath(String.format("//input[@id='%s']/../../td[6]", contact.id()))).getText();
+
+    }
 }
