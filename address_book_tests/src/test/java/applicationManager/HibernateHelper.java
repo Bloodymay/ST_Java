@@ -10,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class HibernateHelper extends HelperBase {
@@ -29,12 +30,13 @@ public class HibernateHelper extends HelperBase {
     }
 
     static List<Contact> convertContactList(List<ContactRecord> records) {
-        List<Contact> result = new ArrayList<>();
-        for (ContactRecord record : records) {
-            result.add(convertRecordToContact(record));
-        }
-        return result;
-
+//        List<Contact> result = new ArrayList<>(); через цикл
+//        for (ContactRecord record : records) {
+//            result.add(convertRecordToContact(record));
+//        }
+//        return result;
+//
+        return records.stream().map(HibernateHelper::convertRecordToContact).collect(Collectors.toList()); //через трансформатор
     }
 
     private static Contact convertRecordToContact(ContactRecord record) {
@@ -49,12 +51,13 @@ public class HibernateHelper extends HelperBase {
         return new ContactRecord(Integer.parseInt(id), contact.firstName(), contact.lastName(), contact.address(), contact.mobilePhone());
     }
 
-    static List<Group> convertList(List<GroupRecord> records) {
-        List<Group> result = new ArrayList<>();
-        for (GroupRecord record : records) {
-            result.add(convertRecordToGroup(record));
-        }
-        return result;
+    static List<Group> convertGroupList(List<GroupRecord> records) {
+//        List<Group> result = new ArrayList<>(); через цикл
+//        for (GroupRecord record : records) {
+//            result.add(convertRecordToGroup(record));
+//        }
+//        return result;
+        return records.stream().map(HibernateHelper::convertRecordToGroup).collect(Collectors.toList()); //через трансформатор
 
     }
 
@@ -99,7 +102,7 @@ public class HibernateHelper extends HelperBase {
 
 
     public List<Group> getGroupsListHnt() {
-        return convertList(sessionFactory.fromSession(session -> {
+        return convertGroupList(sessionFactory.fromSession(session -> {
             return session.createQuery("from GroupRecord ", GroupRecord.class).list();
         }));
 

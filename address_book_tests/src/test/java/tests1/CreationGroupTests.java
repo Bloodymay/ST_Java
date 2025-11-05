@@ -19,6 +19,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 
 public class CreationGroupTests extends TestBase {
@@ -74,14 +76,21 @@ public class CreationGroupTests extends TestBase {
 
 
     }
-    public static List<Group> singleGroupProvider() {
-        return  List.of(new Group()
+//    public static List<Group> singleGroupProvider() { Создание группы Через генератор
+//        return  List.of(new Group()
+//                .withName(Utilities.stringGenerator(10))
+//                .withHeader(Utilities.stringGenerator(20))
+//                .withFooter(Utilities.stringGenerator(30)));
+//
+//    }
+    public static Stream<Group> singleGroupProvider() { //Создание группы через Stream
+        Supplier<Group> randomGroup = () -> new Group()
                 .withName(Utilities.stringGenerator(10))
                 .withHeader(Utilities.stringGenerator(20))
-                .withFooter(Utilities.stringGenerator(30)));
+                .withFooter(Utilities.stringGenerator(30));
+        return  Stream.generate(randomGroup).limit(3);
 
     }
-
 
 //    @Test
 //    public void canCreateGroupWithNameOnly() {

@@ -17,6 +17,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Generator {
     @Parameter(names = {"--type", "-t"})
@@ -104,6 +107,16 @@ public class Generator {
         return result;
     }
 
+    private Object generateData(Supplier<Object> supplier) {
+        return Stream.generate(supplier).limit(10).collect(Collectors.toList()); // через поток
+//        var result = new ArrayList<Object>(); через цикл
+//
+//        for (int i = 0; i < count; i++) {
+//            result.add(supplier.get());
+//        }
+//        return result;
+    }
+
     private Object generateGroups() {
         var result = new ArrayList<Group>();
         for (int i = 0; i < count; i++) {
@@ -113,5 +126,18 @@ public class Generator {
                     .withFooter(Utilities.stringGenerator(i * 10)));
         }
         return result;
+    }
+    private Object generateGroupsWithSupplier() {
+        return generateData(() -> new Group()
+                .withName(Utilities.stringGenerator(10))
+                .withHeader(Utilities.stringGenerator(10))
+                .withFooter(Utilities.stringGenerator(10)));
+
+    }
+    private Object generateContactsWithSupplier() {
+        return generateData(() -> new Contact()
+                .mainFields(Utilities.stringGenerator(10), Utilities.stringGenerator(10),Utilities.stringGenerator(10),Utilities.phoneGenerator(10))
+                .contactWithPhoto(Utilities.getRandomFile("src/test/resources/images")));
+
     }
 }
