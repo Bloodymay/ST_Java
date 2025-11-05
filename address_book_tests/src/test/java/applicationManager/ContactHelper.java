@@ -7,9 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
@@ -256,5 +254,16 @@ public class ContactHelper extends HelperBase {
     public String getPhones(Contact contact) {
         return manager.driver.findElement(By.xpath(String.format("//input[@id='%s']/../../td[6]", contact.id()))).getText();
 
+    }
+
+    public Map<String, String> getAllPhones() {
+        var result = new HashMap<String, String>();
+       var rows = manager.driver.findElements(By.name("entry"));
+       for (var row : rows) {
+           var id = row.findElement(By.tagName("input")).getAttribute("id");
+           var phones = row.findElements(By.tagName("td")).get(5).getText();
+           result.put(id, phones);
+       }
+       return result;
     }
 }
