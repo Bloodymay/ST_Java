@@ -14,7 +14,7 @@ public class JdbcHelper extends HelperBase {
 
     public List<Group> getGroupList() {
         var groups = new ArrayList<Group>();
-        try (var connection = DriverManager.getConnection(manager.properties.getProperty("db.url"), manager.properties.getProperty("db.user"), manager.properties.getProperty("db.pwd"));
+        try (var connection = DriverManager.getConnection(manager.properties.getProperty("db.url"), manager.properties.getProperty("db.username"), manager.properties.getProperty("db.pwd"));
              var statement = connection.createStatement();
              var result = statement.executeQuery("select group_id,group_name, group_header,group_footer from group_list")) {
 
@@ -35,7 +35,7 @@ public class JdbcHelper extends HelperBase {
 
     public List<Group> getGroupListWIthIdAndName() {
         var groups = new ArrayList<Group>();
-        try (var connection = DriverManager.getConnection(manager.properties.getProperty("db.url"), manager.properties.getProperty("db.user"), manager.properties.getProperty("db.pwd"));
+        try (var connection = DriverManager.getConnection(manager.properties.getProperty("db.url"), manager.properties.getProperty("db.username"), manager.properties.getProperty("db.pwd"));
              var statement = connection.createStatement();
              var result = statement.executeQuery("select group_id,group_name from group_list")) {
 
@@ -53,7 +53,7 @@ public class JdbcHelper extends HelperBase {
     }
 
     public void checkConsistensy() throws SQLException {
-        try (var connection = DriverManager.getConnection(manager.properties.getProperty("db.url"), manager.properties.getProperty("db.user"), manager.properties.getProperty("db.pwd"));
+        try (var connection = DriverManager.getConnection(manager.properties.getProperty("db.url"), manager.properties.getProperty("db.username"), manager.properties.getProperty("db.pwd"));
              var statement = connection.createStatement();
              var result = statement.executeQuery("select * from address_in_groups ag LEFT JOIN addressbook ab ON ab.id=ag.id WHERE ab.id IS NULL")) {
             if (result.next()) {
@@ -70,7 +70,7 @@ public class JdbcHelper extends HelperBase {
         var group_id = Integer.parseInt(group.id());
         String sql = "SELECT COUNT(*) FROM address_in_groups WHERE group_id = ?";
 
-        try (var connection = DriverManager.getConnection(manager.properties.getProperty("db.url"), manager.properties.getProperty("db.user"), manager.properties.getProperty("db.pwd"));
+        try (var connection = DriverManager.getConnection(manager.properties.getProperty("db.url"), manager.properties.getProperty("db.username"), manager.properties.getProperty("db.pwd"));
              var statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, group_id);
@@ -101,7 +101,7 @@ public class JdbcHelper extends HelperBase {
 
         try (Connection connection = DriverManager.getConnection(
                 manager.properties.getProperty("db.url"),
-                manager.properties.getProperty("db.user"),
+                manager.properties.getProperty("db.username"),
                 manager.properties.getProperty("db.pwd"));
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
