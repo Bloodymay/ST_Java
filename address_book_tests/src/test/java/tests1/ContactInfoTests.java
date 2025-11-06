@@ -13,6 +13,15 @@ public class ContactInfoTests extends TestBase {
     @Test
     public void testPhones() {
         if (!app.getContact().isContactPresent()) {
+            app.getHibernate().creatingContact(new Contact()
+                    .mainFields(Utilities.stringGenerator(10),
+                            Utilities.stringGenerator(10),
+                            Utilities.stringGenerator(10),
+                            Utilities.phoneGenerator(10))
+                    .contactWithPhoto(Utilities.getRandomFile("src/test/resources/images")));
+            app.getContact().goToTheHomePage();
+        }
+        if (!app.getContact().isContactPresent()) {
             app.getHibernate().creatingContact(new Contact().mainFields(Utilities.stringGenerator(10), Utilities.stringGenerator(10), Utilities.stringGenerator(15), Utilities.phoneGenerator(10)).contactWithPhoto(Utilities.getRandomFile("src/test/resources/images")));
             app.getContact().goToTheHomePage();
         }
@@ -25,6 +34,15 @@ public class ContactInfoTests extends TestBase {
 
     @Test
     public void testAllPhones() {
+        if (!app.getContact().isContactPresent()) {
+            app.getHibernate().creatingContact(new Contact()
+                    .mainFields(Utilities.stringGenerator(10),
+                            Utilities.stringGenerator(10),
+                            Utilities.stringGenerator(10),
+                            Utilities.phoneGenerator(10))
+                    .contactWithPhoto(Utilities.getRandomFile("src/test/resources/images")));
+            app.getContact().goToTheHomePage();
+        }
         var contacts = app.getHibernate().getContactsListHnt();
         var expected = contacts.stream().collect(Collectors.toMap(Contact::id, contact ->
                 Stream.of(contact.homePhone(), contact.mobilePhone(), contact.workPhone()).filter(s -> s != null && !"".equals(s)).collect(Collectors.joining("\n"))
