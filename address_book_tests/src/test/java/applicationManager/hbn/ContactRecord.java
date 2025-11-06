@@ -56,12 +56,14 @@ public class ContactRecord {
 
     public ContactRecord() {
     }
-    public ContactRecord(int id, String firstname, String lastname, String address, String mobile) {
+    public ContactRecord(int id, String firstname, String lastname, String address, String mobile, String email, String email2) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
         this.mobile = mobile;
+        this.email = email;
+        this.email2 = email2;
     }
 
 }

@@ -67,8 +67,8 @@ public class ContactHelper extends HelperBase {
         typeTextInContact(By.name("mobile"), contact.mobilePhone());
 //        typeTextInContact(By.name("work"), contact.workPhone());
 //        typeTextInContact(By.name("fax"), contact.fax());
-//        typeTextInContact(By.name("email"), contact.email());
-//        typeTextInContact(By.name("email2"), contact.email2());
+        typeTextInContact(By.name("email"), contact.email());
+        typeTextInContact(By.name("email2"), contact.email2());
 //        typeTextInContact(By.name("email3"), contact.email3());
 //        typeTextInContact(By.name("homepage"), contact.homepage());
         //typeTextInContact(By.name("bday"), String.valueOf(contact.birthDay()));
@@ -256,14 +256,38 @@ public class ContactHelper extends HelperBase {
 
     }
 
+    public Map<String, String> getAllAddresses() {
+        var result = new HashMap<String, String>();
+        var rows = manager.driver.findElements(By.name("entry"));
+        for (var row : rows) {
+            var id = row.findElement(By.tagName("input")).getAttribute("id");
+            var phones = row.findElements(By.tagName("td")).get(3).getText();
+            result.put(id, phones);
+        }
+        return result;
+    }
+
+
     public Map<String, String> getAllPhones() {
         var result = new HashMap<String, String>();
-       var rows = manager.driver.findElements(By.name("entry"));
-       for (var row : rows) {
-           var id = row.findElement(By.tagName("input")).getAttribute("id");
-           var phones = row.findElements(By.tagName("td")).get(5).getText();
-           result.put(id, phones);
-       }
-       return result;
+        var rows = manager.driver.findElements(By.name("entry"));
+        for (var row : rows) {
+            var id = row.findElement(By.tagName("input")).getAttribute("id");
+            var phones = row.findElements(By.tagName("td")).get(5).getText();
+            result.put(id, phones);
+        }
+        return result;
     }
+
+    public Map<String, String> getAllEmails() {
+        var result = new HashMap<String, String>();
+        var rows = manager.driver.findElements(By.name("entry"));
+        for (var row : rows) {
+            var id = row.findElement(By.tagName("input")).getAttribute("id");
+            var emails = row.findElements(By.tagName("td")).get(4).getText();
+            result.put(id, emails);
+        }
+        return result;
+    }
+
 }

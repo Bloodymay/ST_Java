@@ -91,7 +91,7 @@ public class Generator {
             return generateGroups();
 
         } else if (type.equals("contacts")) {
-            return generateContacts();
+            return generateContactsWithSupplier();
         } else {
             throw new IllegalArgumentException("Unsupported type: " + type);
         }
@@ -137,7 +137,7 @@ public class Generator {
     private Object generateContactsWithSupplier() {
         return generateData(() -> new Contact()
                 .mainFields(Utilities.stringGenerator(10), Utilities.stringGenerator(10),Utilities.stringGenerator(10),Utilities.phoneGenerator(10))
-                .contactWithPhoto(Utilities.getRandomFile("src/test/resources/images")));
+                .contactWithPhoto(Utilities.getRandomFile("src/test/resources/images")).withEmail(Utilities.stringGenerator(15)).withEmail2(Utilities.stringGenerator(16)));
 
     }
 }

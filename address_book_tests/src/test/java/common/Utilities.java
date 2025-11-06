@@ -20,8 +20,8 @@ public class Utilities {
 //    }
     public static String stringGenerator(int length) {
         var random = new Random();
-        Supplier<Integer> randomNumders = () -> random.nextInt(26);
-        var result = Stream.generate(randomNumders)
+        Supplier<Integer> randomNumbers = () -> random.nextInt(26);
+        var result = Stream.generate(randomNumbers)
                 .limit(length)
                 .map(i -> 'a' + i)
                 .map(Character::toString)
@@ -31,17 +31,15 @@ public class Utilities {
 
     public static String phoneGenerator(int length) {
         var random = new Random();
-        var result = "";
-        for (int i = 0; i < length; i++) {
-            result=result + random.nextInt(9);
-
-        }
+        Supplier<Integer> randomNumbers = () -> random.nextInt(9);
+        var result = Stream.generate(randomNumbers).limit(length).map(Object::toString).collect(Collectors.joining());
         return result;
     }
 
     public static String getRandomFile(String dirPath){
         var fileNames = new File(dirPath).list();
         var random = new Random();
+        assert fileNames != null;
         var index = random.nextInt(fileNames.length);
         return Paths.get(dirPath, fileNames[index]).toString();
     }
