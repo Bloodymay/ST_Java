@@ -5,6 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/address_book_tests.iml" filepath="$PROJECT_DIR$/address_book_tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/address_book_tests.main.iml" filepath="$PROJECT_DIR$/.idea/modules/address_book_tests.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/address_book_tests.test.iml" filepath="$PROJECT_DIR$/.idea/modules/address_book_tests.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mantis_tests.iml" filepath="$PROJECT_DIR$/mantis_tests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mantis_tests.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mantis_tests.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mantis_tests.test.iml" filepath="$PROJECT_DIR$/.idea/modules/mantis_tests.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/sandBox.iml" filepath="$PROJECT_DIR$/sandBox.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sandBox.main.iml" filepath="$PROJECT_DIR$/.idea/modules/sandBox.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/sandBox.test.iml" filepath="$PROJECT_DIR$/.idea/modules/sandBox.test.iml" />

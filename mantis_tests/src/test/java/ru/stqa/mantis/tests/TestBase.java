@@ -1,13 +1,10 @@
-package tests1;
+package ru.stqa.mantis.tests;
 
-import applicationManager.AppManager;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import ru.stqa.mantis.manager.AppManager;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class TestBase {
@@ -21,9 +18,5 @@ public class TestBase {
             app = new AppManager();
             app.initialization(System.getProperty("browser", "firefox"), properties);//Добавлен выбор браузера
         }
-    }
-    @AfterEach
-    void checkDatabaseConsistency() throws SQLException {
-        app.getJdbc().checkConsistensy();
     }
 }
