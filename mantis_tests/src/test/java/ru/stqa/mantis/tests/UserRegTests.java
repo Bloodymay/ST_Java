@@ -15,7 +15,7 @@ public class UserRegTests extends TestBase {
         Supplier<Credentials> randomUser = () -> new Credentials()
                 .withUsername(Utilities.stringGenerator(10))
                 .withPassword(Utilities.stringGenerator(20));
-        return Stream.generate(randomUser).limit(3);
+        return Stream.generate(randomUser).limit(1);
     }
 
     @ParameterizedTest
@@ -25,6 +25,20 @@ public class UserRegTests extends TestBase {
         var pwd = credentials.password();
         var email = String.format("%s@localhost", username);
         app.jamesCli().addUser(String.format("%s@localhost", username), pwd);  //создать пользователя на почтовом сервере,для регистрации (JamesHelper)
+        app.signUp().signUp(username, email);// заполняем форму и отправляем письмо (браузер)
+        var regURL = app.mail().extractUrl(email, pwd);//ждем почту (MailHelper) и извлекаем ссылку
+        app.signUp().regConfirmation(regURL, username, pwd);//возвращаемся в браузер, переходим по ссылке и завершаем регистрацию(браузер)
+        app.http().login(username, pwd);//Проверяем,может ли новый пользователь войти со своими кредами(http helper)
+        var isLog = app.http().isLoggedIn();
+        Assertions.assertTrue(isLog);
+    }
+    @ParameterizedTest
+    @MethodSource("userCredentials")
+    public void testApiUserReg(Credentials credentials) throws InterruptedException, IOException {
+        var username = credentials.username();
+        var pwd = credentials.password();
+        var email = String.format("%s@localhost", username);
+        app.jamesApi().addUser(credentials);  //создать пользователя на почтовом сервере,для регистрации (JamesHelper)
         app.signUp().signUp(username, email);// заполняем форму и отправляем письмо (браузер)
         var regURL = app.mail().extractUrl(email, pwd);//ждем почту (MailHelper) и извлекаем ссылку
         app.signUp().regConfirmation(regURL, username, pwd);//возвращаемся в браузер, переходим по ссылке и завершаем регистрацию(браузер)
