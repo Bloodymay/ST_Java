@@ -82,9 +82,9 @@ public class CreationGroupTests extends TestBase {
 //
 //    }
     public static Stream<Group> randomGroupsProvider() { //Создание группы через Stream
-        Supplier<Group> randomGroup = () -> new Group()
-                .withName(Utilities.stringGenerator(10))
-                .withHeader(Utilities.stringGenerator(20))
+    Supplier<Group> randomGroup = () -> new Group()
+            .withName(Utilities.stringGenerator(10))
+            .withHeader(Utilities.stringGenerator(20))
                 .withFooter(Utilities.stringGenerator(30));
         return  Stream.generate(randomGroup).limit(3);
 

@@ -12,6 +12,8 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MailHelper extends HelperBase {
     public MailHelper(AppManager manager) {
@@ -83,5 +85,16 @@ public class MailHelper extends HelperBase {
         catch (MessagingException e) {
             throw new RuntimeException(e);
         }
+    }
+    public String extractUrl(String username, String password) {
+        var mails = receive(username,password, Duration.ofSeconds(10));
+        var text = mails.get(0).content();
+        Pattern compile = Pattern.compile("http://\\S*");
+        Matcher matcher = compile.matcher(text);
+        if(matcher.find()){
+            var url = text.substring(matcher.start(),matcher.end());
+            return url;
+        }
+        return null;
     }
 }

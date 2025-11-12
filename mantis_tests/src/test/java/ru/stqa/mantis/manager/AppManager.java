@@ -15,6 +15,7 @@ public class AppManager {
     private HttpSessionHelper httpSessionHelper;
     private JamesCliHelper jamesCliHelper;
     private MailHelper mailHelper;
+    private SignUpHelper signUpHelper;
 
     public void initialization(String browser, Properties properties) {
         this.browser = browser;
@@ -66,6 +67,12 @@ public class AppManager {
             mailHelper = new MailHelper(this);
         }
         return mailHelper;
+    }
+    public SignUpHelper signUp() {
+        if (signUpHelper == null){
+            signUpHelper = new SignUpHelper(this);
+        }
+        return signUpHelper;
     }
     }
 

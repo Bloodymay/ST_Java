@@ -1,6 +1,8 @@
 package ru.stqa.mantis.tests;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import ru.stqa.mantis.manager.AppManager;
 
 import java.io.FileReader;
@@ -19,4 +21,5 @@ public class TestBase {
             app.initialization(System.getProperty("browser", "firefox"), properties);//Добавлен выбор браузера
         }
     }
+
 }
