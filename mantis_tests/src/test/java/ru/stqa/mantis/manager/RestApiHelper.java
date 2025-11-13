@@ -14,7 +14,7 @@ public class RestApiHelper extends HelperBase{
         super(manager);
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         ApiKeyAuth Authorization = (ApiKeyAuth) defaultClient.getAuthentication("Authorization");
-        Authorization.setApiKey(manager.property("apiKey"));
+        Authorization.setApiKey(manager.property("api.key"));
     }
 
     public void createIssue(IssueData issueData) {
@@ -28,12 +28,11 @@ public class RestApiHelper extends HelperBase{
         projectIdentifier.setId(issueData.project());
         issue.setProject(projectIdentifier);
 
-        IssuesApi apiInstance = new IssuesApi();
-        Issue body = new Issue(); // Issue | The issue to add.
+        IssuesApi apiInstance = new IssuesApi();// Issue | The issue to add.
         try {
-            apiInstance.issueAdd(body);
+            apiInstance.issueAdd(issue);
         } catch (ApiException e) {
-            new  RuntimeException(e);
+            throw new  RuntimeException(e);
         }
     }
 }
