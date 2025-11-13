@@ -3,6 +3,7 @@ package ru.stqa.mantis.manager;
 import okhttp3.*;
 import org.openqa.selenium.os.ExternalProcess;
 import ru.stqa.mantis.model.Credentials;
+import ru.stqa.mantis.model.UserData;
 
 import java.io.IOException;
 import java.net.CookieManager;
@@ -17,10 +18,24 @@ public class JamesApiHelper extends HelperBase{
         client = new OkHttpClient.Builder().cookieJar(new JavaNetCookieJar(new CookieManager())).build();
     }
 
-    public void addUser(Credentials credentials) throws InterruptedException {
-        RequestBody body = RequestBody.create(String.format("{\"password\":\"%s\"}", credentials.password()), JSON);
+//    public void addUser(Credentials credentials) throws InterruptedException {
+//        RequestBody body = RequestBody.create(String.format("{\"password\":\"%s\"}", credentials.password()), JSON);
+//        Request request = new Request.Builder()
+//                .url(String.format("%s/users/%s@localhost", manager.property("api.baseUrl"), credentials.username()))
+//                .put(body)
+//                .build();
+//        try (Response response = client.newCall(request).execute()) {
+//            if (!response.isSuccessful()) throw new RuntimeException("Unexpected code " + response);
+//            System.out.println(response.body().string());
+//        }
+//        catch (IOException e){
+//            throw new RuntimeException(e);
+//        }
+//    }
+    public void addUser(UserData userData) throws InterruptedException {
+        RequestBody body = RequestBody.create(String.format("{\"password\":\"%s\"}", userData.password()), JSON);
         Request request = new Request.Builder()
-                .url(String.format("%s/users/%s@localhost", manager.property("api.baseUrl"), credentials.username()))
+                .url(String.format("%s/users/%s", manager.property("api.baseUrl"), userData.email()))
                 .put(body)
                 .build();
         try (Response response = client.newCall(request).execute()) {
