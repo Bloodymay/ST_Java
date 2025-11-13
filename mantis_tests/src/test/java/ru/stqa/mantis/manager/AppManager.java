@@ -18,6 +18,7 @@ public class AppManager {
     private SignUpHelper signUpHelper;
     private JamesApiHelper jamesApiHelper;
     private RestApiHelper restApiHelper;
+    private SoapApiHelper soapApiHelper;
 
     public void initialization(String browser, Properties properties) {
         this.browser = browser;
@@ -55,9 +56,7 @@ public class AppManager {
         return httpSessionHelper;
 
     }
-    public String property(String name){
-        return properties.getProperty(name);
-    }
+    
     public JamesCliHelper jamesCli() {
         if (jamesCliHelper == null) {
             jamesCliHelper = new JamesCliHelper(this);
@@ -82,11 +81,20 @@ public class AppManager {
         }
         return restApiHelper;
     }
+    public SoapApiHelper soapApi() {
+        if (soapApiHelper==null){
+            soapApiHelper = new SoapApiHelper(this);
+        }
+        return soapApiHelper;
+    }
     public SignUpHelper signUp() {
         if (signUpHelper == null){
             signUpHelper = new SignUpHelper(this);
         }
         return signUpHelper;
+    }
+    public String property(String name){
+        return properties.getProperty(name);
     }
     }
 
