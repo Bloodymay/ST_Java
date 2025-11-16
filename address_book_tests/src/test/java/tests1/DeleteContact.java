@@ -1,6 +1,7 @@
 package tests1;
 
 import common.Utilities;
+import io.qameta.allure.Allure;
 import model.Contact;
 import model.Group;
 import org.junit.jupiter.api.Assertions;
@@ -14,10 +15,13 @@ import java.util.Random;
 public class DeleteContact extends TestBase {
     @Test
     public void testDeleteContact() {
-        if (!app.getContact().isContactPresent()) {
-            app.getHibernate().creatingContact(new Contact().mainFields("Mayya", "Matveeva", "улица Пушкина,дом Колотушкина", "89524582455").contactWithPhoto(Utilities.getRandomFile("src/test/resources/images")));
-            app.getContact().goToTheHomePage();
-        }
+        Allure.step("Checking precondition", step-> {
+            if (!app.getContact().isContactPresent()) {
+                app.getHibernate().creatingContact(new Contact().mainFields("Mayya", "Matveeva", "улица Пушкина,дом Колотушкина", "89524582455").contactWithPhoto(Utilities.getRandomFile("src/test/resources/images")));
+                app.getContact().goToTheHomePage();
+            }
+        }) ;
+
         Comparator<Contact> compareByID = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
@@ -30,7 +34,10 @@ public class DeleteContact extends TestBase {
         var expectedContacts = new ArrayList<>(oldContacts);
         expectedContacts.remove(index);
         expectedContacts.sort(compareByID);
-        Assertions.assertEquals(newContacts, expectedContacts);
+        Allure.step("Validating results", step-> {
+            Assertions.assertEquals(newContacts, expectedContacts);
+        });
+
     }
 
     @Test

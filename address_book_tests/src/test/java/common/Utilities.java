@@ -31,9 +31,10 @@ public class Utilities {
 
     public static String phoneGenerator(int length) {
         var random = new Random();
-        Supplier<Integer> randomNumbers = () -> random.nextInt(9);
+        var firstDigit = String.valueOf(random.nextInt(9)+1);
+        Supplier<Integer> randomNumbers = () -> random.nextInt(10);
         var result = Stream.generate(randomNumbers).limit(length).map(Object::toString).collect(Collectors.joining());
-        return result;
+        return firstDigit+result;
     }
 
     public static String getRandomFile(String dirPath){

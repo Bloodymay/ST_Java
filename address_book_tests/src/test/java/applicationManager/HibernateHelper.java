@@ -2,6 +2,7 @@ package applicationManager;
 
 import applicationManager.hbn.ContactRecord;
 import applicationManager.hbn.GroupRecord;
+import io.qameta.allure.Step;
 import model.Contact;
 import model.Group;
 import org.hibernate.SessionFactory;
@@ -77,7 +78,7 @@ public class HibernateHelper extends HelperBase {
         }
         return new GroupRecord(Integer.parseInt(id), group.name(), group.header(), group.footer());
     }
-
+    @Step
     public void creatingContact(Contact contact) {
         sessionFactory.inSession(session -> {
             session.getTransaction().begin();
@@ -97,7 +98,7 @@ public class HibernateHelper extends HelperBase {
         });
         return result[0];
     }
-
+    @Step
     public List<Contact> getContactsListHnt() {
         return convertContactList(sessionFactory.fromSession(session -> {
             return session.createQuery("from ContactRecord", ContactRecord.class).list();

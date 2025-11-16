@@ -1,5 +1,6 @@
 package applicationManager;
 
+import io.qameta.allure.Step;
 import model.Contact;
 import model.Group;
 import org.openqa.selenium.By;
@@ -127,14 +128,18 @@ public class ContactHelper extends HelperBase {
         clickElement(By.cssSelector(String.format("a[href='edit.php?id=%s']", contact.id())));
 
     }
+    public void goToMainPage() {
+        manager.driver.get(manager.properties.getProperty("web.baseUrl"));
+    }
 
     public void contactModify(Contact contact, Contact modifiedContact) {
         initModifyContact(contact);
         fillContactForm(modifiedContact);
         submitModifyContact();
     }
-
+    @Step
     public void deleteOneContact(Contact contact) {
+
         selectContact(contact);
         deleteContact();
         returnToHomePage();
@@ -173,7 +178,10 @@ public class ContactHelper extends HelperBase {
     }
 
     public void selectContact(Contact contact) {
-        clickElement(By.cssSelector(String.format("input[value='%s']", contact.id())));
+        if (!manager.isElementPresent(By.linkText("home"))) {
+            manager.driver.get(manager.properties.getProperty("web.baseUrl"));
+        }
+        clickElement(By.cssSelector(String.format("input2[value='%s']", contact.id())));
     }
 
     public void deleteContact() {

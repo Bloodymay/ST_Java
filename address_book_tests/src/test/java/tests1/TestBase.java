@@ -22,8 +22,12 @@ public class TestBase {
             app.initialization(System.getProperty("browser", "firefox"), properties);//Добавлен выбор браузера
         }
     }
+//    @AfterEach
+//    void checkDatabaseConsistency() throws SQLException {
+//        app.getJdbc().checkConsistensy();
+//    }
     @AfterEach
-    void checkDatabaseConsistency() throws SQLException {
-        app.getJdbc().checkConsistensy();
+    public void returnToMainPage() {
+        app.getContact().goToMainPage();
     }
 }
