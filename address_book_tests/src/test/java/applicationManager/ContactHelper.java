@@ -181,7 +181,7 @@ public class ContactHelper extends HelperBase {
         if (!manager.isElementPresent(By.linkText("home"))) {
             manager.driver.get(manager.properties.getProperty("web.baseUrl"));
         }
-        clickElement(By.cssSelector(String.format("input2[value='%s']", contact.id())));
+        clickElement(By.cssSelector(String.format("input[value='%s']", contact.id())));
     }
 
     public void deleteContact() {
@@ -199,9 +199,12 @@ public class ContactHelper extends HelperBase {
     }
 
     public void addContactToGroup(Contact contact, Group group) {
-        goToTheHomePage();
+        goToMainPage();
+
         selectContact(contact);
+
         selectGroupOnHomepage(group);
+
         clickElement(By.name("add"));
     }
 

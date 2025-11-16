@@ -122,6 +122,7 @@ public class CreationContact extends TestBase {
                     .contactWithPhoto(Utilities.getRandomFile("src/test/resources/images")));
             contact = app.getHibernate().getContactById(index);
         }
+
         app.getContact().addContactToGroup(contact, group);
         var newRelated = app.getHibernate().getContactsInGroup(group);
         Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
