@@ -88,9 +88,9 @@ public class GroupHelper extends HelperBase {
     }
 
     private void fillGroupForm(Group group) {
-        typeText(By.name("group_name"), group.name());
-        typeText(By.name("group_header"), group.header());
-        typeText(By.name("group_footer"), group.footer());
+        typeText(By.name("group_name"), group.name().trim());
+        typeText(By.name("group_header"), group.header().trim());
+        typeText(By.name("group_footer"), group.footer().trim());
 
     }
 
