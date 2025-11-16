@@ -5,8 +5,13 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 
 
@@ -19,13 +24,22 @@ public class AppManager {
     private JdbcHelper jdbc;
     private HibernateHelper hibernate;
 
-    public void initialization(String browser, Properties properties) {
+    public void initialization(String browser, Properties properties) throws MalformedURLException {
         this.properties = properties;
         if (driver == null) {
+            var url = properties.getProperty("seleniumServer");
             if (browser.equals("firefox")) {
-                driver = new FirefoxDriver();
+                if (url != null) {
+                    driver = new RemoteWebDriver(new URL(url), new FirefoxOptions());
+                } else {
+                    driver = new FirefoxDriver();
+                }
             } else if (browser.equals("chrome")) {
-                driver = new ChromeDriver();
+                if (url != null) {
+                    driver = new RemoteWebDriver(new URL(url), new ChromeOptions());
+                } else {
+                    driver = new ChromeDriver();
+                }
             } else {
                 throw new IllegalArgumentException("Unsupported browser: " + browser);//Добавлен выбор браузера
             }
@@ -43,6 +57,7 @@ public class AppManager {
         return session;
 
     }
+
     public JdbcHelper getJdbc() {
         if (jdbc == null) {
             jdbc = new JdbcHelper(this);
@@ -50,6 +65,7 @@ public class AppManager {
         }
         return jdbc;
     }
+
     public HibernateHelper getHibernate() {
         if (hibernate == null) {
             hibernate = new HibernateHelper(this);
@@ -65,6 +81,7 @@ public class AppManager {
         }
         return groups;
     }
+
     public ContactHelper getContact() {
         if (contacts == null) {
             contacts = new ContactHelper(this);
